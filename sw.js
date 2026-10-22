@@ -1,4 +1,4 @@
-const CACHE = 'fat-tiger-pwa-v2-theme';
+const CACHE = 'fat-tiger-pwa-v3-photo-manager';
 const APP_SHELL = ['/', '/index.html', '/manifest.webmanifest', '/icons/icon-192.png', '/icons/icon-512.png'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(APP_SHELL)).then(() => self.skipWaiting()));
