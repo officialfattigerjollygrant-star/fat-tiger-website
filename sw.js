@@ -1,4 +1,4 @@
-const CACHE = 'fat-tiger-guest-orders-v6';
+const CACHE = 'fat-tiger-whiteorange-analytics-v1';
 const APP_SHELL = ['/','/index.html','/admin.html','/manifest.webmanifest','/icons/icon-192.png','/icons/icon-512.png'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(APP_SHELL).catch(()=>{})).then(() => self.skipWaiting()));
