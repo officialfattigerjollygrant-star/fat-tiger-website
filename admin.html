@@ -1,138 +1,602 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#111"><title>FAT TIGER | Owner Dashboard</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#ff8a1d"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://checkout.razorpay.com/v1/checkout.js"></script><script src="/config.js"></script><meta name="description" content="Browse the FAT TIGER menu and place an order online."><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><link rel="manifest" href="/manifest.webmanifest"><link rel="icon" href="/icons/icon-192.png"><link rel="apple-touch-icon" href="/icons/icon-192.png">
+<title>FAT TIGER | Order Online</title>
 <style>
-:root{--bg:#101010;--panel:#1b1b1b;--gold:#f6b51b;--muted:#aaa;--line:#303030}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#fff;font:15px Inter,Arial,sans-serif}button,input,select,textarea{font:inherit}header{padding:18px 24px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;position:sticky;top:0;background:#151515;z-index:2}header b{font-size:21px}header b span{color:var(--gold)}header small{color:#aaa;margin-left:auto}.wrap{max-width:1150px;margin:24px auto;padding:0 18px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:18px}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.tabs{display:flex;gap:8px;margin:16px 0}.tab,button{border:0;border-radius:9px;padding:10px 13px;cursor:pointer;font-weight:700}.tab{background:#292929;color:#ddd}.tab.active,.gold{background:var(--gold);color:#111}.dark{background:#303030;color:#fff}.danger{background:#632d25;color:#fff}input,select,textarea{background:#252525;border:1px solid #444;color:white;border-radius:9px;padding:11px;width:100%}.field{flex:1;min-width:170px}h1{font-size:25px;margin:0 0 7px}h2{font-size:19px;margin:0 0 15px}.muted{color:var(--muted);font-size:13px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.stat{padding:15px;background:#242424;border-radius:12px}.stat strong{display:block;font-size:25px;color:var(--gold);margin-top:7px}.tablewrap{overflow:auto}table{border-collapse:collapse;width:100%;min-width:650px}th,td{text-align:left;border-bottom:1px solid #333;padding:12px 8px}th{color:#bbb;font-size:12px;text-transform:uppercase}.pill{border-radius:30px;background:#333;padding:5px 9px;font-size:12px}.available{color:#7ee0a3}.unavailable{color:#ff9a8c}.hidden{display:none!important}.itemname{min-width:180px}.note{background:#292318;border:1px solid #5a4720;border-radius:10px;padding:12px;color:#f7d98d;line-height:1.5}.menutable{min-width:1180px}.photoCell{min-width:90px}.photoThumb{width:70px;height:58px;object-fit:cover;border-radius:9px;background:#292929;border:1px solid #444;display:block}.photoPlaceholder{width:70px;height:58px;border-radius:9px;background:#292929;display:flex;align-items:center;justify-content:center;font-size:23px}.photoTools{min-width:180px}.photoTools input[type=file]{font-size:12px;padding:7px;margin-bottom:7px}.photoTools input[type=url]{min-width:240px;margin-bottom:7px}.photoTools button{margin:0 5px 5px 0}.menuSearch{max-width:460px;margin:10px 0 14px}.previewLabel{font-size:11px;color:#aaa;margin-top:5px;display:block}@media(max-width:600px){header{padding:15px}.stats{grid-template-columns:1fr}.panel{padding:14px}.wrap{padding:0 12px}.tabs{overflow:auto}.tab{white-space:nowrap}}
+:root{--bg:#0c0b0a;--panel:#171411;--panel2:#211912;--gold:#ff8a1d;--gold2:#ffbd45;--muted:#c1b7ab;--white:#fff8ef;--red:#f05a35;--line:#3b2a1c;--green:#67df9a}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(ellipse at 50% -15%,#2b1a0e 0%,var(--bg) 56%) fixed;color:var(--white);font-family:Inter,Arial,sans-serif}
+button,input,select{font:inherit}
+button{transition:transform .18s ease,filter .18s ease,background .18s ease}
+button:hover{filter:brightness(1.07)}
+.top{background:rgba(13,11,9,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;box-shadow:0 8px 24px #0005}
+.nav{max-width:1200px;margin:auto;padding:14px 20px;display:flex;align-items:center;gap:15px}
+.logo{font-weight:1000;font-size:23px;letter-spacing:-1px;text-shadow:0 2px 18px #ff8a1d22}
+.logo span{color:var(--gold)}
+.nav small{color:#b7a99b;display:block;font-size:10px;letter-spacing:2px;margin-top:2px}
+.nav .spacer{flex:1}
+.cartbtn,.primary{border:0;background:linear-gradient(135deg,var(--gold2),var(--gold));color:#1b1006;font-weight:900;padding:12px 17px;border-radius:12px;cursor:pointer;box-shadow:0 5px 18px #ff8a1d25}
+.cartbtn:hover,.primary:hover{transform:translateY(-1px);box-shadow:0 8px 22px #ff8a1d35}
+.hero{max-width:1200px;margin:22px auto 10px;padding:0 20px}
+.heroBox{border:1px solid #5a351d;border-radius:24px;overflow:hidden;min-height:300px;padding:40px;display:flex;align-items:center;background:linear-gradient(90deg,rgba(7,6,5,.94) 0%,rgba(10,8,7,.77) 41%,rgba(10,8,7,.12) 100%),url('https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=1800&q=85') center 54%/cover;box-shadow:0 18px 50px #0005}
+.eyebrow{color:var(--gold2);font-weight:900;letter-spacing:2.4px;text-transform:uppercase;font-size:12px}
+.hero h1{font-size:clamp(36px,5vw,60px);line-height:.99;margin:13px 0;max-width:560px;letter-spacing:-1.4px;text-shadow:0 3px 16px #0008}
+.hero p{color:#f1e6da;max-width:465px;line-height:1.65;font-size:15px;text-shadow:0 2px 9px #0008}
+.hero .primary{margin-top:5px;padding:13px 19px}
+.wrap{max-width:1200px;margin:20px auto;padding:0 20px}
+.tools{display:flex;gap:12px;flex-wrap:wrap;margin:24px 0}
+.tools input{flex:1;min-width:200px;background:#181411;border:1px solid #49311f;border-radius:12px;color:var(--white);padding:14px;outline:none;transition:border-color .2s,box-shadow .2s}
+.tools input:focus{border-color:var(--gold);box-shadow:0 0 0 3px #ff8a1d20}
+.chips{display:flex;gap:9px;flex-wrap:wrap;margin:14px 0 24px}
+.chip{background:#181411;border:1px solid #49311f;color:#e6d7c7;border-radius:99px;padding:9px 15px;cursor:pointer}
+.chip:hover{border-color:var(--gold);color:var(--gold2)}
+.chip.active{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#1b1006;border-color:transparent;font-weight:900;box-shadow:0 4px 14px #ff8a1d20}
+.sectionHead{display:flex;align-items:end;justify-content:space-between;margin:24px 0 14px;gap:10px}
+.sectionHead h2{margin:0;font-size:25px;letter-spacing:-.4px}
+.sectionHead span{color:#b3a99e;font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.item{background:linear-gradient(150deg,#201912 0%,#151210 74%);border:1px solid #3b2a1c;border-radius:18px;overflow:hidden;display:flex;flex-direction:column;min-width:0;transition:transform .2s,border-color .2s,box-shadow .2s}
+.item:hover{transform:translateY(-4px);border-color:#a85c22;box-shadow:0 12px 25px #0005,0 0 0 1px #ff8a1d0a}
+.foodpic{height:155px;background:#251b13;position:relative;overflow:hidden}
+.foodpic:after{content:"";position:absolute;inset:40% 0 0;background:linear-gradient(transparent,#08070699);pointer-events:none}
+.foodpic img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s,filter .35s;filter:saturate(1.09) contrast(1.03)}
+.item:hover img{transform:scale(1.06);filter:saturate(1.17) contrast(1.06)}
+.foodpic .tag{position:absolute;left:10px;top:10px;z-index:1;background:#130e0de8;color:var(--gold2);border:1px solid #ff8a1d4a;font-size:10px;padding:6px 8px;border-radius:7px;font-weight:900;letter-spacing:.5px}
+.photoCredit{padding:5px 12px 0;color:#aa9b8a;font-size:10px;line-height:1.3}.photoCredit a{color:#ffbd45;text-decoration:underline;text-underline-offset:2px}
+.itembody{padding:14px;display:flex;flex-direction:column;flex:1}
+.itembody small{color:#c0a994;font-size:11px}
+.itembody h3{font-size:15px;margin:7px 0 14px;line-height:1.35;flex:1;color:#fff8ef}
+.itemfoot{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.price{font-size:18px;font-weight:950;color:var(--gold2)}
+.add{background:transparent;border:1px solid var(--gold);color:var(--gold2);border-radius:9px;padding:8px 12px;cursor:pointer;font-weight:900}
+.add:hover{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#1b1006;border-color:transparent}
+.empty{padding:35px;text-align:center;color:#bbaea0;grid-column:1/-1}
+.notice{color:#a79a8d;font-size:12px;line-height:1.6;margin:25px 0}
+.footer{border-top:1px solid #3b2a1c;padding:27px 20px;color:#b5a79a;text-align:center;font-size:13px;background:#0a0908}
+.drawerShade{position:fixed;inset:0;background:#000b;z-index:10;display:none;backdrop-filter:blur(3px)}
+.drawer{position:fixed;z-index:11;right:0;top:0;height:100dvh;width:min(430px,100%);background:linear-gradient(160deg,#211710,#100e0c);border-left:1px solid #5a351d;padding:20px;transform:translateX(105%);transition:transform .25s;display:flex;flex-direction:column;box-shadow:-20px 0 45px #0006}
+.drawer.open{transform:translateX(0)}
+.drawerShade.open{display:block}
+.drawerHead{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.drawerHead h2{margin:0}
+.close{background:#302219;color:#fff8ef;border:1px solid #55351d;border-radius:9px;padding:9px 12px;cursor:pointer}
+.cartitems{overflow:auto;flex:1;margin:18px 0}
+.cartrow{display:grid;grid-template-columns:1fr auto;gap:10px;border-bottom:1px solid #49311f;padding:13px 0}
+.cartrow small{display:block;color:#bdad9e;margin-top:5px}
+.qty{display:flex;align-items:center;gap:9px;margin-top:9px}
+.qty button{background:#3a291d;color:#fff8ef;border:1px solid #5a3a23;border-radius:6px;width:26px;height:26px;cursor:pointer}
+.cartTotal{border-top:1px solid #5a3a23;padding-top:16px}
+.totalLine{display:flex;justify-content:space-between;margin-bottom:14px;font-size:19px;font-weight:900}
+.cartTotal input,.cartTotal select{width:100%;margin-bottom:10px;background:#181411;border:1px solid #49311f;color:var(--white);padding:12px;border-radius:10px;outline:none}
+.cartTotal input:focus,.cartTotal select:focus{border-color:var(--gold)}
+.checkout{width:100%;padding:14px}
+.emptycart{text-align:center;color:#bbaea0;padding:40px 10px}
+.mobilehint{color:#ad9d8e;font-size:11px;line-height:1.5;margin-top:8px}
+@media(max-width:900px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:650px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.foodpic{height:125px}.itembody{padding:10px}.itembody h3{font-size:13px}.price{font-size:16px}.add{padding:7px 9px}.heroBox{padding:25px;min-height:265px;background-position:58% center}.hero p{font-size:14px;max-width:340px}.nav{padding:12px 15px}.logo{font-size:19px}.wrap,.hero{padding-left:14px;padding-right:14px}.sectionHead h2{font-size:21px}.hero h1{max-width:340px}}
+@media(max-width:360px){.grid{grid-template-columns:1fr}.foodpic{height:175px}.logo{font-size:17px}.cartbtn{padding:10px 12px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important}}
 
-.photo-modal{position:fixed;inset:0;z-index:100;background:#000b;display:flex;align-items:center;justify-content:center;padding:18px}.photo-modal.hidden{display:none!important}.photo-modal-content{background:#171717;border:1px solid #444;border-radius:16px;width:min(100%,1000px);max-height:90vh;overflow:auto;padding:18px}.pixabay-results{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-top:14px}.pixabay-card{border:1px solid #393939;border-radius:12px;padding:10px;background:#202020}.pixabay-card img{width:100%;height:130px;object-fit:cover;border-radius:8px;background:#111}.pixabay-card p{font-size:12px;color:#ccc;min-height:32px}.pixabay-card button{width:100%}.pixabay-card a{font-size:12px;color:#ffda72}
+/* Guest order tracking, cancellation and review */
+.tracking-wrap{max-width:1120px;margin:22px auto;padding:0 20px}
+.tracking-panel{border:1px solid #5a351d;border-radius:20px;padding:22px;background:linear-gradient(145deg,#1e1711,#11100e);box-shadow:0 14px 35px #0004}
+.tracking-panel h2{margin:0 0 8px;color:#fff8ef;font-size:24px}
+.track-form{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;margin-top:15px}
+.track-form input,.track-action input,.track-action textarea,.track-action select{width:100%;padding:12px;background:#181411;border:1px solid #49311f;border-radius:10px;color:#fff8ef}
+.track-result{margin-top:16px}
+.track-card{border:1px solid #49311f;background:#14110f;border-radius:14px;padding:16px;margin-top:12px}
+.track-summary{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.track-code{display:inline-block;background:#2c1e12;border:1px dashed #c67d31;border-radius:9px;padding:8px 12px;letter-spacing:1.5px;font-weight:900;color:#ffcb7a}
+.track-timeline{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:18px 0 10px}
+.track-step{font-size:11px;text-align:center;color:#9b8e80;position:relative;padding-top:26px}
+.track-step:before{content:'';position:absolute;top:4px;left:calc(50% - 8px);width:16px;height:16px;border:2px solid #514235;border-radius:50%;background:#181411;z-index:1}
+.track-step:after{content:'';position:absolute;left:calc(50% + 10px);top:11px;width:calc(100% - 20px);height:2px;background:#514235}
+.track-step:last-child:after{display:none}.track-step.done{color:#ffca73;font-weight:800}.track-step.done:before{border-color:#f6b51b;background:#f6b51b;box-shadow:0 0 0 3px #f6b51b22}.track-step.done:after{background:#b77b25}
+.track-cancelled{padding:12px;border:1px solid #793c32;border-radius:10px;background:#281311;color:#ffc2b8;margin-top:12px}
+.track-action{border-top:1px solid #403024;margin-top:16px;padding-top:15px;display:grid;gap:10px}
+.track-action textarea{min-height:76px;resize:vertical}.track-action .action-buttons{display:flex;gap:9px;flex-wrap:wrap}.track-success{color:#94efb4}.track-error{color:#ff9f92}.review-stars{color:#ffbd45;font-size:19px;letter-spacing:2px}
+@media(max-width:650px){.tracking-wrap{padding:0 14px}.tracking-panel{padding:16px}.track-form{grid-template-columns:1fr}.track-timeline{gap:2px}.track-step{font-size:9px;padding-left:1px;padding-right:1px}.track-step:after{width:calc(100% - 16px);left:calc(50% + 8px)}}
 
-/* FAT TIGER light theme + activity dashboard */
-:root{--bg:#fffaf5;--panel:#ffffff;--gold:#e98a48;--muted:#77675d;--line:#efd7c3}
-body{background:#fffaf5!important;color:#38291f!important}
-header{background:rgba(255,250,245,.97)!important;border-bottom:1px solid #f0d7c4!important;box-shadow:0 6px 22px #9a5a2812!important}
-header b span{color:#e17a35!important}header small{color:#816d60!important}
-.panel,.stat{background:#fff!important;border:1px solid #f0ddce!important;box-shadow:0 5px 20px #9a5a2810!important}
-.tab{background:#fff3e8!important;color:#714a32!important;border:1px solid #f0d2b9!important}.tab.active,.gold{background:linear-gradient(135deg,#ffe1c6,#ffc18f)!important;color:#663718!important;border:1px solid #f0c49e!important}
-.dark{background:#fff4eb!important;color:#69452d!important;border:1px solid #edd5c2!important}.danger{background:#ffebe6!important;color:#973f30!important;border:1px solid #f0c6bc!important}
-input,select,textarea{background:#fff!important;border:1px solid #ead5c5!important;color:#38291f!important}.muted{color:#857267!important}
-table{background:#fff!important}th{color:#886e5c!important}td{border-bottom:1px solid #f1e2d7!important}.pill{background:#fff1e5!important;color:#83512e!important}.available{color:#168552!important}.unavailable{color:#b33f33!important}
-.note{background:#fff4e9!important;border:1px solid #f0c9a8!important;color:#79502f!important}.photo-modal{background:#65432d66!important}.photo-modal-content,.pixabay-card{background:#fffaf5!important;border-color:#efd6c2!important}.pixabay-card p{color:#6e594b!important}.pixabay-card a{color:#b45f29!important}
-.activity-card{border:1px solid #f0d9c7;background:#fff7f0;border-radius:12px;padding:14px;margin:10px 0}.activity-timeline{margin-top:14px}.activity-event{display:grid;grid-template-columns:minmax(140px,180px) 1fr auto;gap:12px;padding:10px;border-bottom:1px solid #f1e2d7;align-items:start}.activity-event:last-child{border-bottom:0}.activity-pill{display:inline-block;border-radius:30px;background:#fff0e3;color:#98521f;font-size:12px;padding:4px 8px}.activity-detail{border:1px solid #efcfb3;border-radius:12px;padding:14px;margin-top:14px;background:#fffaf6}.activity-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.activity-grid .stat{padding:12px}
-@media(max-width:650px){.activity-event{grid-template-columns:1fr;gap:4px}.activity-grid{grid-template-columns:1fr}.tabs{overflow-x:auto}}
+
+/* FAT TIGER light theme: white + soft orange */
+:root{--bg:#fffaf5;--panel:#ffffff;--panel2:#fff3e8;--gold:#e98a48;--gold2:#ffd0a8;--muted:#76675d;--white:#35271f;--red:#ce5c42;--line:#f1d6c0;--green:#168552}
+body{background:#fffaf5!important;color:#35271f!important}
+.top{background:rgba(255,250,245,.96)!important;border-bottom:1px solid #f1d6c0!important;box-shadow:0 8px 24px #b86a2810!important}
+.nav small{color:#887468!important}.logo{text-shadow:none!important}.logo span{color:#e57b35!important}
+.cartbtn,.primary{background:linear-gradient(135deg,#ffe0c5,#ffbd86)!important;color:#663718!important;box-shadow:0 5px 18px #ea99502a!important;border:1px solid #f7c79f!important}
+.heroBox{background:linear-gradient(100deg,rgba(255,250,245,.97) 0%,rgba(255,239,224,.91) 55%,rgba(255,223,193,.28) 100%),url('https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=1800&q=85') center 54%/cover!important;border:1px solid #f0c8a5!important;box-shadow:0 18px 45px #8f4e2112!important}
+.eyebrow{color:#d56f2c!important}.hero h1{color:#3c2a20!important;text-shadow:none!important}.hero p{color:#6e584a!important;text-shadow:none!important}
+.tools input{background:#fff!important;border:1px solid #f0d7c3!important;color:#35271f!important}.tools input:focus{border-color:#ed9c60!important;box-shadow:0 0 0 3px #ffba8526!important}
+.chip{background:#fff!important;border:1px solid #efd7c3!important;color:#6e5445!important}.chip:hover{border-color:#e69a62!important;color:#b96225!important}.chip.active{background:linear-gradient(135deg,#ffe6d1,#ffc99f)!important;color:#633816!important;border-color:#f3c198!important;box-shadow:0 4px 14px #e88f3b18!important}
+.item{background:#fff!important;border:1px solid #f0dfd1!important;box-shadow:0 4px 14px #9a5a2810!important}.item:hover{border-color:#edb07f!important;box-shadow:0 12px 25px #a35b2118!important}.foodpic{background:#fff1e6!important}.foodpic .tag{background:#fffaf5eF!important;color:#ad5b22!important;border:1px solid #f1c6a2!important}
+.itembody small,.cartrow small{color:#897365!important}.itembody h3{color:#3d2c22!important}.price{color:#bb6128!important}.add{background:#fff8f2!important;border:1px solid #e9985c!important;color:#b85f25!important}.add:hover{background:linear-gradient(135deg,#ffe0c5,#ffbd86)!important;color:#663718!important}
+.notice{color:#867266!important}.footer{border-top:1px solid #f1d6c0!important;color:#826c5e!important;background:#fff3e8!important}
+.drawerShade{background:#3c281c66!important}.drawer{background:linear-gradient(160deg,#fffaf5,#fff0e2)!important;border-left:1px solid #ecc6a6!important;box-shadow:-20px 0 45px #66432b20!important}.drawerHead h2{color:#39281e!important}.close{background:#fff3e8!important;color:#5b3926!important;border:1px solid #eccbae!important}.cartrow{border-bottom:1px solid #f0d8c4!important}.qty button{background:#fff0e3!important;color:#633718!important;border:1px solid #eec8a8!important}.cartTotal{border-top:1px solid #edcfb5!important}.cartTotal input,.cartTotal select{background:#fff!important;border:1px solid #edd6c3!important;color:#3c2a20!important}.emptycart{color:#8f796a!important}.mobilehint{color:#897365!important}
+.tracking-panel{border:1px solid #f0d3bc!important;background:linear-gradient(145deg,#fff,#fff4e9)!important;box-shadow:0 14px 35px #9d5b2610!important}.tracking-panel h2{color:#3d2c22!important}.track-form input,.track-action input,.track-action textarea,.track-action select{background:#fff!important;border:1px solid #e9d3c1!important;color:#3d2c22!important}.track-card{border:1px solid #f0d8c4!important;background:#fff!important}.track-code{background:#fff1e5!important;border:1px dashed #e4a06b!important;color:#a85722!important}.track-step{color:#a18d7c!important}.track-step:before{border-color:#e9d7c7!important;background:#fff!important}.track-step:after{background:#e9d7c7!important}.track-step.done{color:#b75e25!important}.track-step.done:before{border-color:#ef9d61!important;background:#ffcfa9!important;box-shadow:0 0 0 3px #f6c39e33!important}.track-step.done:after{background:#efa96f!important}.track-cancelled{border:1px solid #f0c8bd!important;background:#fff1ec!important;color:#8c3827!important}.track-action{border-top:1px solid #efddcf!important}.track-success{color:#168552!important}.track-error{color:#bf4436!important}.review-stars{color:#d7823e!important}
+.analytics-consent{position:fixed;z-index:200;left:16px;right:16px;bottom:16px;max-width:820px;margin:0 auto;padding:16px 18px;border:1px solid #edc4a1;border-radius:16px;background:#fffaf5;box-shadow:0 15px 45px #59331e2e;display:flex;align-items:center;gap:14px;flex-wrap:wrap;color:#4a3326}
+.analytics-consent[hidden]{display:none!important}.analytics-consent .consent-copy{flex:1;min-width:230px}.analytics-consent strong{display:block;margin-bottom:5px}.analytics-consent p{margin:0;color:#776255;font-size:12px;line-height:1.5}.analytics-consent .consent-actions{display:flex;gap:8px;flex-wrap:wrap}.analytics-consent button{border:1px solid #edc8a9;background:#fff2e6;color:#70401f;border-radius:9px;padding:10px 12px;font-weight:800;cursor:pointer}.analytics-consent button.allow{background:linear-gradient(135deg,#ffe0c5,#ffbd86)}
+@media(max-width:600px){.analytics-consent{left:8px;right:8px;bottom:8px;padding:13px}.analytics-consent .consent-copy{min-width:100%}.heroBox{background:linear-gradient(100deg,rgba(255,250,245,.96),rgba(255,239,224,.82)),url('https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=1800&q=85') center/cover!important}}
+
+
+/* Advanced commerce/customer account UI */
+:root{--bg:#fffaf5;--panel:#fff;--panel2:#fff1e5;--gold:#e98743;--gold2:#ffd0a8;--muted:#7c6b5f;--white:#38291f;--line:#efd8c4}
+.ft-offer-strip{max-width:1160px;margin:18px auto 24px;padding:0 20px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.ft-offer-strip>div{background:#fff1e5;border:1px solid #f3d2b4;border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:5px}.ft-offer-strip strong{color:#a7531f}.ft-offer-strip span{font-size:13px;color:#745d4c;line-height:1.4}
+.ft-modal[hidden]{display:none!important}.ft-modal{position:fixed;inset:0;background:#35261bb8;z-index:80;display:grid;place-items:center;padding:18px;overflow:auto}.ft-modal-card{background:#fffdfb;border:1px solid #efcfb2;border-radius:22px;box-shadow:0 25px 80px #603b2633;width:min(600px,100%);max-height:92dvh;overflow:auto;padding:22px;color:#38291f}.ft-modal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}.ft-modal-head h2{margin:6px 0;color:#38291f}.ft-modal-card label{display:block;font-weight:800;font-size:13px;margin:12px 0 5px}.ft-modal-card input,.ft-modal-card select{width:100%;padding:12px;border:1px solid #e7d1bf;border-radius:10px;background:#fff;color:#38291f}.ft-modal-card button.primary{margin-top:12px;min-height:44px}.ft-kicker{font-size:10px;font-weight:1000;letter-spacing:1.7px;color:#bb672b}.ft-muted{color:#7a6a5e;font-size:13px;line-height:1.5}.ft-status{min-height:18px;font-size:13px;color:#a7531f;margin-top:12px}.ft-footnote{font-size:11px;color:#8d7c6d;line-height:1.5;border-top:1px solid #f0dfd1;margin-top:18px;padding-top:12px}.ft-account-summary{display:flex;align-items:center;gap:12px;margin:15px 0;padding:14px;background:#fff3e8;border-radius:14px}.ft-avatar{width:42px;height:42px;border-radius:50%;background:#ffe1c7;display:grid;place-items:center;font-size:22px}.ft-account-summary>div:nth-child(2){flex:1}.ft-secondary{background:#fff6ee;border:1px solid #eac9ad;color:#754323;border-radius:10px;padding:10px 12px;font-weight:800;cursor:pointer}.ft-my-orders{display:grid;gap:10px;margin-top:12px}.ft-order-card{background:#fff8f2;border:1px solid #f0d8c3;border-radius:14px;padding:13px}.ft-order-card .ft-order-head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.ft-price-breakdown{font-size:12px;color:#786354;background:#fff7f0;border:1px solid #f1ddcb;border-radius:10px;padding:10px;margin:6px 0 12px;line-height:1.7}.ft-delivery-status{font-size:12px;color:#7b5a42;background:#fff6ee;border-radius:9px;padding:8px;margin:-3px 0 10px}.ft-location-button{width:100%;padding:10px;border:1px solid #edb58a;color:#9a4d1f;background:#fff8f2;border-radius:10px;font-weight:850;cursor:pointer;margin-bottom:8px}.ft-location-card{width:min(460px,100%)}
+#paymentMethod,#deliveryType{background:#fff!important;border:1px solid #e9d2bf!important;color:#38291f!important;width:100%;padding:12px;border-radius:10px;margin:0 0 10px}
+@media(max-width:650px){.ft-offer-strip{grid-template-columns:1fr;padding:0 14px}.ft-modal-card{padding:17px}.ft-account-summary{align-items:flex-start}}
 
 </style></head><body>
-<header><b>🐯 FAT <span>TIGER</span></b><small>OWNER DASHBOARD</small><a href="/" style="color:#f6b51b">Customer site ↗</a></header>
-<div class="wrap">
-<section id="setup" class="panel"><h1>Connect your free database</h1><p class="muted">Enter the same Supabase project URL and public anon key you put in <code>config.js</code>. These values are public website keys; never use a service-role key.</p><div class="row"><div class="field"><label>Supabase Project URL</label><input id="url" placeholder="https://your-project.supabase.co"></div><div class="field"><label>Supabase anon/public key</label><input id="key" placeholder="eyJ..."></div></div><div class="row" style="margin-top:12px"><button class="gold" onclick="connect()">Connect</button><span id="setupMsg" class="muted"></span></div></section>
-<section id="login" class="panel hidden"><h2>Owner login</h2><p class="muted">Use the owner account created in Supabase Authentication. Public sign-ups should stay disabled.</p><div class="row"><div class="field"><input id="email" type="email" placeholder="Owner email"></div><div class="field"><input id="password" type="password" placeholder="Password"></div><button class="gold" onclick="login()">Sign in</button></div><p id="loginMsg" class="muted"></p></section>
-<section id="app" class="hidden">
-<div class="row" style="justify-content:space-between;margin-bottom:16px"><div><h1>Kitchen control centre</h1><div class="muted">Manage incoming orders, prices and availability.</div></div><div class="row"><button class="dark" onclick="refresh()">↻ Refresh</button><button class="dark" onclick="logout()">Log out</button></div></div>
-<div class="stats"><div class="stat">New orders<strong id="newCount">0</strong></div><div class="stat">Today's orders<strong id="todayCount">0</strong></div><div class="stat">Today's order value<strong id="todayValue">₹0</strong></div></div>
-<div class="tabs"><button class="tab active" onclick="showTab('orders',this)">Orders</button><button class="tab" onclick="showTab('menu',this)">Menu & availability</button><button class="tab" onclick="showTab('settings',this)">Store settings</button><button class="tab" onclick="showTab('activity',this);loadActivity()">Customer activity</button></div>
-<section id="ordersTab" class="panel"><div class="row" style="justify-content:space-between"><div><h2>Incoming orders</h2><p class="muted">Track codes, guest cancellation reasons, ratings and reviews appear here.</p></div><select id="orderFilter" style="width:auto" onchange="renderOrders()"><option value="all">All orders</option><option>New</option><option>Accepted</option><option>Preparing</option><option>Ready</option><option>Completed</option><option>Cancelled</option></select></div><div id="ordersTable" class="tablewrap"></div></section>
-<section id="menuTab" class="panel hidden"><div class="row" style="justify-content:space-between"><h2>Menu items & photos</h2><button class="gold" onclick="addItem()">＋ Add item</button></div><p class="muted">Switch availability off to hide an item. Upload your own image, paste a photo URL, or use the auto photo finder to choose a name-matched food photo for every item missing a picture.</p>
-<div class="note" style="margin:12px 0">Pixabay photo finder: use <b>Auto photo</b> beside one item, review the results, and choose the closest match. The chosen image is downloaded and saved into your FAT TIGER Supabase storage, rather than permanently hotlinked from Pixabay. These are stock photos, not guaranteed photos of your exact recipe. Pixabay API rules do not allow systematic bulk downloading, so choose photos one item at a time.</div>
-<div class="row" style="margin:12px 0;align-items:center"><a href="https://pixabay.com/api/docs/" target="_blank" rel="noopener noreferrer" style="color:#ffda72">Pixabay API documentation ↗</a><span id="autoPhotoStatus" class="muted" role="status" aria-live="polite">Search works after the Vercel API environment variables are configured.</span></div>
-<input id="menuSearch" class="menuSearch" placeholder="Search item to edit its photo…" oninput="renderMenu()"><div id="menuTable" class="tablewrap"></div></section>
-<section id="settingsTab" class="panel hidden"><h2>Store availability</h2><p class="muted">Temporarily pause all orders without removing menu items.</p><div class="row"><strong id="storeState">Loading…</strong><button id="storeToggle" class="gold" onclick="toggleStore()">Turn store off</button></div><p class="muted">Store status is shared with the customer website.</p></section>
-<section id="activityTab" class="panel hidden">
- <div class="row" style="justify-content:space-between;align-items:flex-start"><div><h2>Customer activity & product interest</h2><p class="muted">Consent-based website events only: product taps/clicks, add/remove cart, checkout attempts and placed orders. No GPS/location is collected. Activity is anonymous unless a checkout links the browser session to an order.</p></div><button class="gold" onclick="loadActivity()">↻ Refresh activity</button></div>
- <div class="activity-grid"><div class="stat">Consented sessions<strong id="activitySessionCount">0</strong></div><div class="stat">Product clicks/taps<strong id="activityClickCount">0</strong></div><div class="stat">Add-to-cart events<strong id="activityCartCount">0</strong></div></div>
- <div class="row" style="margin:14px 0"><div class="field"><input id="activitySearch" placeholder="Search customer name, phone, session, order code or product" oninput="renderActivity()"></div><select id="activityEventFilter" style="width:auto;min-width:170px" onchange="renderActivity()"><option value="all">All event types</option><option value="product_click">Product clicks/taps</option><option value="add_to_cart">Add to cart</option><option value="remove_from_cart">Remove from cart</option><option value="checkout_started">Checkout started</option><option value="order_placed">Order placed</option><option value="page_view">Website visits</option></select></div>
- <h3>Most viewed / added products</h3><div id="productActivityTable" class="tablewrap"></div>
- <h3 style="margin-top:22px">Find and track an individual customer/session</h3><p class="muted">Search by customer details after checkout, order tracking code, product, or anonymous session ID. A visitor who declines analytics will not appear here.</p><div id="activitySessions" class="tablewrap"></div><div id="activityCustomerDetail"></div>
-</section>
-</section>
-<div class="note">Free hosting + free Supabase database can run this setup. Real online ordering only starts after you create the Supabase project, run the included SQL setup, create the owner login, and add the project URL/key to <code>config.js</code>. Do not accept live orders before testing from a second device.</div>
-</div>
-<script src="/config.js"></script><script>
-let db=null, orders=[], menu=[], settings={store_open:true}, activityRows=[], selectedActivitySession=null;
-const $=id=>document.getElementById(id), rupee=n=>'₹'+Number(n||0).toLocaleString('en-IN');
-function connect(){const url=$('url').value.trim(),key=$('key').value.trim();if(!url||!key){$('setupMsg').textContent='Enter both values.';return}db=window.supabase.createClient(url,key);$('setup').classList.add('hidden');$('login').classList.remove('hidden');$('setupMsg').textContent=''}
-if(window.FAT_TIGER_CONFIG?.SUPABASE_URL&&window.FAT_TIGER_CONFIG?.SUPABASE_ANON_KEY){$('url').value=window.FAT_TIGER_CONFIG.SUPABASE_URL;$('key').value=window.FAT_TIGER_CONFIG.SUPABASE_ANON_KEY;connect()}
-async function login(){if(!db){connect();if(!db)return}const {error}=await db.auth.signInWithPassword({email:$('email').value,password:$('password').value});if(error){$('loginMsg').textContent=error.message;return}await start()}
-async function start(){const {data:{session}}=await db.auth.getSession();if(!session){$('login').classList.remove('hidden');return} $('login').classList.add('hidden');$('app').classList.remove('hidden');await refresh()}
-async function logout(){await db.auth.signOut();location.reload()}
-async function refresh(){if(!db)return;const a=await db.from('orders').select('*').order('created_at',{ascending:false}).limit(150);if(a.error){alert(a.error.message);return}orders=a.data||[];const b=await db.from('menu_items').select('*').order('sort_order');if(b.error){alert(b.error.message);return}menu=b.data||[];const c=await db.from('store_settings').select('*').eq('id',1).maybeSingle();if(c.data)settings=c.data;renderOrders();renderMenu();renderStats();$('storeState').textContent=settings.store_open?'🟢 Store is OPEN':'🔴 Store is CLOSED';$('storeToggle').textContent=settings.store_open?'Turn store off':'Turn store on'}
-function renderStats(){const today=new Date().toLocaleDateString('en-CA');const todays=orders.filter(o=>new Date(o.created_at).toLocaleDateString('en-CA')===today);$('newCount').textContent=orders.filter(o=>o.status==='New').length;$('todayCount').textContent=todays.length;$('todayValue').textContent=rupee(todays.reduce((s,o)=>s+Number(o.total_amount||0),0))}
-function renderOrders(){const filter=$('orderFilter').value;const list=orders.filter(o=>filter==='all'||o.status===filter);$('ordersTable').innerHTML=list.length?`<table><thead><tr><th>Order / tracking code</th><th>Customer</th><th>Items</th><th>Total</th><th>Status</th><th>Guest cancellation reason</th><th>Rating / review</th></tr></thead><tbody>${list.map(o=>`<tr><td>#${esc(String(o.id).slice(0,8))}<br><small>Track: <b>${esc(o.tracking_code||'—')}</b></small><br><small>${new Date(o.created_at).toLocaleString()}</small></td><td>${esc(o.customer_name)}<br><small>${esc(o.customer_phone)}<br>${esc(o.customer_address)}</small></td><td>${(o.items||[]).map(i=>`${esc(i.name)} × ${i.quantity}`).join('<br>')}</td><td>${rupee(o.total_amount)}<br><small>${esc(o.payment_method||'')}</small></td><td><select onchange="setStatus('${o.id}',this.value)">${['New','Accepted','Preparing','Ready','Completed','Cancelled'].map(s=>`<option ${o.status===s?'selected':''}>${s}</option>`).join('')}</select></td><td>${o.cancel_reason?`<b>${esc(o.cancel_reason)}</b><br><small>${o.cancelled_at?new Date(o.cancelled_at).toLocaleString():''}</small>`:'<span class="muted">—</span>'}</td><td>${o.review_rating?`<b style="color:#f6b51b">${'★'.repeat(Number(o.review_rating))}${'☆'.repeat(5-Number(o.review_rating))}</b><br><small>${esc(o.review_text||'No written comment')}</small><br><small>${o.reviewed_at?new Date(o.reviewed_at).toLocaleString():''}</small>`:'<span class="muted">No review yet</span>'}</td></tr>`).join('')}</tbody></table>`:'<p class="muted">No orders yet. New customer orders will appear here.</p>'}
-function renderMenu(){const q=($('menuSearch')?.value||'').trim().toLowerCase();const shown=menu.filter(i=>`${i.name} ${i.category} ${i.section||''}`.toLowerCase().includes(q));$('menuTable').innerHTML=shown.length?`<table class="menutable"><thead><tr><th>Current photo</th><th>Item</th><th>Category</th><th>Price ₹</th><th>Available</th><th>Upload photo</th><th>Photo URL / reset</th><th>Auto by name</th><th>Save item</th></tr></thead><tbody>${shown.map(i=>`<tr><td class="photoCell">${i.image_url?`<img class="photoThumb" src="${esc(i.image_url)}" alt="Photo of ${esc(i.name)}" onerror="this.style.display='none'">`:`<div class="photoPlaceholder">🍽️</div>`}<span class="previewLabel">${i.image_url?(i.image_source==='pixabay_auto'?'Auto photo • Pixabay':(i.image_source==='pexels_auto'?'Auto photo • Pexels':'Saved photo')):'Category default'}</span></td><td class="itemname"><input id="n-${i.id}" value="${esc(i.name)}"></td><td><input id="c-${i.id}" value="${esc(i.category)}"></td><td><input id="p-${i.id}" type="number" min="0" value="${i.price}" style="width:100px"></td><td><input id="a-${i.id}" type="checkbox" ${i.available?'checked':''} style="width:20px;height:20px"></td><td class="photoTools"><input id="photo-${i.id}" type="file" accept="image/jpeg,image/png,image/webp"><button class="gold" onclick="uploadPhoto('${i.id}')">Upload photo</button></td><td class="photoTools"><input id="photoUrl-${i.id}" type="url" value="${esc(i.image_url||'')}" placeholder="https://...image.jpg"><button class="dark" onclick="savePhotoUrl('${i.id}')">Save URL</button><button class="dark" onclick="clearPhoto('${i.id}')">Use default</button></td><td><button class="dark" onclick="autoPhotoForItem('${i.id}')">Auto photo</button></td><td><button class="gold" onclick="saveItem('${i.id}')">Save item</button></td></tr>`).join('')}</tbody></table>`:'<p class="muted">No matching menu item. Try another search.</p>'}
-async function saveItem(id){const {error}=await db.from('menu_items').update({name:$('n-'+id).value.trim(),category:$('c-'+id).value.trim(),price:Number($('p-'+id).value),available:$('a-'+id).checked}).eq('id',id);if(error)alert(error.message);else{await refresh();alert('Menu item updated.')}}
-async function uploadPhoto(id){const input=$('photo-'+id),file=input?.files?.[0];if(!file){alert('Pehle is item ki photo choose karo.');return}const allowed={'image/jpeg':'jpg','image/png':'png','image/webp':'webp'};if(!allowed[file.type]){alert('Please choose JPG, PNG, or WEBP image.');return}if(file.size>5*1024*1024){alert('Photo 5 MB se chhoti honi chahiye.');return}const path=`${id}/${Date.now()}.${allowed[file.type]}`;const {error:uploadError}=await db.storage.from('menu-images').upload(path,file,{cacheControl:'3600',contentType:file.type,upsert:false});if(uploadError){alert('Photo upload nahi hui: '+uploadError.message+'\nSupabase mein photo setup SQL run kiya hai, ye check karo.');return}const {data}=db.storage.from('menu-images').getPublicUrl(path);const {error}=await db.from('menu_items').update({image_url:data.publicUrl,image_credit:null,image_credit_url:null,image_source_url:null,image_source:'manual_upload'}).eq('id',id);if(error){alert('Photo upload ho gayi, lekin item se link nahi ho paayi: '+error.message);return}await refresh();alert('Photo save ho gayi! Customer website par Ctrl+F5 karke check karo.')}
-async function savePhotoUrl(id){const raw=$('photoUrl-'+id).value.trim();let imageUrl=null;if(raw){try{const u=new URL(raw);if(u.protocol!=='https:'){alert('Photo URL https:// se shuru hona chahiye.');return}imageUrl=u.href}catch(e){alert('Valid HTTPS photo URL paste karo.');return}}const {error}=await db.from('menu_items').update({image_url:imageUrl,image_credit:null,image_credit_url:null,image_source_url:null,image_source:imageUrl?'manual_url':null}).eq('id',id);if(error){alert('Photo URL save nahi hui: '+error.message);return}await refresh();alert(imageUrl?'Photo URL save ho gaya.':'Photo URL cleared; category default will show.')}
-async function clearPhoto(id){if(!confirm('Is item ki custom photo hatakar default category photo lagani hai?'))return;const {error}=await db.from('menu_items').update({image_url:null,image_credit:null,image_credit_url:null,image_source_url:null,image_source:null}).eq('id',id);if(error){alert(error.message);return}await refresh()}
-
-
-// Pixabay picker. Search/preview requests are made only after the owner clicks an item.
-// Chosen images are copied to the store's Supabase bucket so the live site does not hotlink Pixabay.
-let pixabayCurrentItemId=null, pixabayCurrentHits=[];
-function autoPhotoQuery(item){const n=String(item.name||'').toLowerCase(),s=String(item.section||'').toLowerCase(),c=String(item.category||'').toLowerCase(),t=n+' '+s+' '+c;
- if(/waffle/.test(t)){if(/biscoff|lotus/.test(t))return 'lotus biscoff waffle';if(/nutella/.test(t))return 'nutella waffle';if(/oreo/.test(t))return 'oreo waffle';if(/kit ?kat/.test(t))return 'kitkat waffle';return 'chocolate waffle dessert'}
- if(/milk\s*shakes?|milkshake|\bshake\b/.test(t)){if(/biscoff|lotus/.test(t))return 'lotus biscoff milkshake';if(/nutella/.test(t))return 'nutella milkshake';if(/oreo/.test(t))return 'oreo milkshake';if(/kit ?kat/.test(t))return 'kitkat milkshake';if(/cold coffee|coffee/.test(n))return 'iced coffee milkshake';if(/mango/.test(t))return 'mango milkshake';if(/strawberry/.test(t))return 'strawberry milkshake';return 'milkshake drink'}
- if(/lotus biscoff|biscoff/.test(t))return 'biscoff dessert'; if(/nutella/.test(t))return 'nutella chocolate dessert'; if(/oreo/.test(t))return 'oreo dessert'; if(/kit ?kat/.test(t))return 'chocolate wafer dessert';
- if(/tiramisu/.test(t))return 'tiramisu coffee'; if(/creme brulee/.test(t))return 'creme brulee coffee'; if(/brown sugar/.test(t))return 'brown sugar coffee'; if(/matcha/.test(t))return 'matcha drink'; if(/bubble tea|boba|popping boba/.test(t))return 'bubble tea';
- if(/mojito|lemonade|cooler|blue soda/.test(t))return 'fruit mocktail drink'; if(/masala coke/.test(t))return 'cola drink'; if(/cold coffee|coffee latte|iced coffee/.test(t))return 'iced coffee'; if(/coffee|cappuccino|hazelnut coffee/.test(t))return 'coffee cup'; if(/masala tea|hot beverage|chai/.test(t))return 'masala chai';
- if(/momo|dumpling/.test(t))return /kurkure|crispy|fried/.test(t)?'crispy dumplings':(/chicken/.test(t)?'chicken momos dumplings':'momos dumplings');
- if(/pizza/.test(t))return /chicken|sausage/.test(t)?'chicken pizza':(/paneer/.test(t)?'paneer pizza':(/margherita|tomato magic/.test(t)?'margherita pizza':'pizza food'));
- if(/burger/.test(t))return /chicken/.test(t)?'chicken burger':(/paneer/.test(t)?'paneer burger':(/aloo/.test(t)?'potato tikki burger':'burger food'));
- if(/garlic bread/.test(t))return 'garlic bread'; if(/french fries|peri peri fries|loaded cheesy fries|fries/.test(t))return /loaded|cheesy/.test(t)?'loaded cheese fries':'french fries';
- if(/chicken popcorn/.test(t))return 'chicken popcorn food'; if(/seekh kebab|kebab/.test(t))return 'seekh kebab'; if(/chicken wings|wings/.test(t))return 'chicken wings food'; if(/chicken strips|crispy chicken/.test(t))return 'crispy chicken tenders';
- if(/noodle/.test(t))return /chicken/.test(t)?'chicken noodles':'asian noodles food'; if(/fried rice/.test(t))return /chicken/.test(t)?'chicken fried rice':'fried rice food';
- if(/manchurian|kung pao|chilli paneer|chilli chicken|schezwan|sweet chilli/.test(t))return /chicken/.test(t)?'indo chinese chicken food':'indo chinese vegetarian food'; if(/pasta|alfredo/.test(t))return /chicken/.test(t)?'chicken pasta':'creamy pasta food';
- if(/wrap|tortilla/.test(t))return /chicken/.test(t)?'chicken wrap food':(/paneer/.test(t)?'paneer wrap food':'vegetarian wrap food'); if(/soft drink|combo/.test(t))return 'fast food meal'; if(/paneer/.test(t))return 'paneer Indian snack'; if(/mutton/.test(t))return 'mutton food dish'; if(/chicken/.test(t))return 'chicken food dish';
- if(/shake|drink|beverage/.test(c+' '+s))return 'drink milkshake'; if(/side|garlic bread|fries/.test(c+' '+s))return 'french fries snack'; return 'restaurant food dish';}
-function currentAuthHeaders(token){return {'Authorization':'Bearer '+token,'Accept':'application/json'}}
-async function getOwnerToken(){const {data,error}=await db.auth.getSession();if(error||!data.session?.access_token)throw new Error('Admin login expire ho gaya. Dobara sign in karo.');return data.session.access_token}
-function readableApiError(value){if(value===null||value===undefined)return '';if(typeof value==='string')return value;if(typeof value==='number'||typeof value==='boolean')return String(value);if(typeof value==='object'){if(typeof value.message==='string'&&value.message)return value.message;if(typeof value.error_description==='string'&&value.error_description)return value.error_description;if(typeof value.error==='string'&&value.error)return value.error;try{return JSON.stringify(value,null,2)}catch(_){return String(value)}}return String(value)}
-async function responseErrorText(res,fallback){const body=await res.text().catch(()=> '');if(body){try{const payload=JSON.parse(body);return readableApiError(payload.error??payload.message??payload) || fallback}catch(_){return body.slice(0,500)}}return fallback}
-async function pixabayRequest(path){const token=await getOwnerToken();const res=await fetch(path,{headers:currentAuthHeaders(token)});const payload=await res.json().catch(()=>({}));if(!res.ok)throw new Error(readableApiError(payload.error??payload.message??payload)||'Pixabay request fail hui (HTTP '+res.status+').');return payload}
-async function autoPhotoForItem(id){const item=menu.find(x=>String(x.id)===String(id));if(!item)return;pixabayCurrentItemId=id;pixabayCurrentHits=[];$('pixabayModalTitle').textContent='Photos for '+item.name;$('pixabayModalSubtitle').textContent='Search: '+autoPhotoQuery(item);$('pixabayResultsList').innerHTML='';$('pixabayModalStatus').textContent='Pixabay par photo search ho rahi hai…';$('pixabayModal').classList.remove('hidden');$('autoPhotoStatus').textContent='Searching Pixabay for '+item.name+'…';try{let result=await pixabayRequest('/api/pixabay-search?q='+encodeURIComponent(autoPhotoQuery(item)));let hits=result.hits||[];if(!hits.length){const fallback='food '+String(item.section||item.category||'restaurant').replace(/[&]/g,' ');result=await pixabayRequest('/api/pixabay-search?q='+encodeURIComponent(fallback));hits=result.hits||[]}if(!hits.length){$('pixabayModalStatus').textContent='Is query ke liye result nahi mila. Search terms update karke dobara try kar sakte ho.';return}pixabayCurrentHits=hits.slice(0,12);$('pixabayResultsList').innerHTML=pixabayCurrentHits.map((h,i)=>`<div class="pixabay-card"><img loading="lazy" src="${esc(h.previewURL||h.webformatURL||'')}" alt="Food photo result ${i+1}"><p>${esc((h.tags||'Food photo').slice(0,110))}<br><span class="muted">by ${esc(h.user||'Pixabay contributor')}</span></p><a href="${esc(h.pageURL||'https://pixabay.com/')}" target="_blank" rel="noopener noreferrer">View on Pixabay ↗</a><button class="gold" style="margin-top:10px" onclick="choosePixabayPhoto(${i})">Use this photo</button></div>`).join('');$('pixabayModalStatus').textContent='Ek photo choose karo. Photo tumhare Supabase storage mein save hogi.';}catch(e){$('pixabayModalStatus').textContent='Error: '+(e.message||'Unknown error');$('autoPhotoStatus').textContent=$('pixabayModalStatus').textContent}}
-function closePixabayModal(){$('pixabayModal').classList.add('hidden')}
-async function choosePixabayPhoto(index){const hit=pixabayCurrentHits[index],itemId=pixabayCurrentItemId;if(!hit||!itemId)return;const item=menu.find(x=>String(x.id)===String(itemId));$('pixabayModalStatus').textContent='Photo download karke FAT TIGER storage mein save ho rahi hai…';document.querySelectorAll('#pixabayResultsList button').forEach(b=>b.disabled=true);try{const token=await getOwnerToken();const imageUrl=hit.largeImageURL||hit.webformatURL;if(!imageUrl)throw new Error('Is result ka download URL nahi mila.');const response=await fetch('/api/pixabay-download?url='+encodeURIComponent(imageUrl),{headers:currentAuthHeaders(token)});if(!response.ok){const detail=await responseErrorText(response,'Image download fail hui.');throw new Error('HTTP '+response.status+': '+detail)}const blob=await response.blob();if(!blob.size||blob.size>8*1024*1024)throw new Error('Image empty hai ya 8 MB se badi hai. Doosri photo choose karo.');const mime=blob.type&&blob.type.startsWith('image/')?blob.type:'image/jpeg';const ext=mime==='image/png'?'png':mime==='image/webp'?'webp':'jpg';const filePath=`${itemId}/${Date.now()}-pixabay.${ext}`;const {error:uploadError}=await db.storage.from('menu-images').upload(filePath,blob,{cacheControl:'3600',contentType:mime,upsert:false});if(uploadError)throw new Error('Supabase upload nahi hui: '+uploadError.message);const {data:pub}=db.storage.from('menu-images').getPublicUrl(filePath);const artist=hit.user||'Pixabay contributor';const artistUrl='https://pixabay.com/users/'+encodeURIComponent(artist)+'-'+encodeURIComponent(hit.user_id||'')+'/';const fields={image_url:pub.publicUrl,image_credit:artist,image_credit_url:artistUrl,image_source_url:hit.pageURL||'https://pixabay.com/',image_source:'pixabay_auto'};const {error}=await db.from('menu_items').update(fields).eq('id',itemId);if(error)throw new Error('Image uploaded but menu item update failed: '+error.message);await refresh();$('autoPhotoStatus').textContent='Saved Pixabay photo for '+(item?.name||'menu item')+'.';closePixabayModal();alert('Photo save ho gayi! Customer website par Ctrl+F5 karke check karo.')}catch(e){$('pixabayModalStatus').textContent='Error: '+readableApiError(e&&e.message!==undefined?e.message:e||'Unknown error');document.querySelectorAll('#pixabayResultsList button').forEach(b=>b.disabled=false)}}
-
-async function addItem(){const name=prompt('Item name?');if(!name)return;const price=Number(prompt('Price in ₹?','99'));if(!Number.isFinite(price)||price<0)return alert('Enter a valid price');const category=prompt('Category?','Momos')||'Other';const {error}=await db.from('menu_items').insert([{name,category,section:category,price,available:true,sort_order:menu.length+1}]);if(error)alert(error.message);else refresh()}
-async function setStatus(id,status){const {error}=await db.from('orders').update({status}).eq('id',id);if(error)alert(error.message);else refresh()}
-async function toggleStore(){const {error}=await db.from('store_settings').update({store_open:!settings.store_open}).eq('id',1);if(error)alert(error.message);else refresh()}
-
-async function loadActivity(){
- if(!db)return;
- $('activitySessions').innerHTML='<p class="muted">Loading activity…</p>';
- const {data,error}=await db.from('menu_activity').select('*').order('created_at',{ascending:false}).limit(1500);
- if(error){$('activitySessions').innerHTML='<div class="note">Activity analytics database setup needed or read permission missing: '+esc(error.message)+'</div>';$('productActivityTable').innerHTML='';$('activityCustomerDetail').innerHTML='';return}
- activityRows=data||[];renderActivity();
-}
-function getSessionOrders(sessionId){return orders.filter(o=>String(o.tracking_session_id||'')===String(sessionId));}
-function activityEventLabel(type){return ({page_view:'Website visit',product_click:'Product click / tap',add_to_cart:'Added to cart',remove_from_cart:'Removed from cart',checkout_started:'Checkout started',order_placed:'Order placed'})[type]||type}
-function activitySearchText(sessionId,rows,related){return [sessionId,...related.flatMap(o=>[o.customer_name,o.customer_phone,o.tracking_code,o.id]),...rows.flatMap(r=>[r.product_name,r.category,r.event_type])].join(' ').toLowerCase()}
-function renderActivity(){
- const q=($('activitySearch')?.value||'').trim().toLowerCase(), filter=$('activityEventFilter')?.value||'all';
- const filtered=activityRows.filter(r=>filter==='all'||r.event_type===filter);
- const sessions=new Map();for(const r of filtered){if(!sessions.has(r.session_id))sessions.set(r.session_id,[]);sessions.get(r.session_id).push(r)}
- const allSessions=new Set(activityRows.map(r=>r.session_id));
- $('activitySessionCount').textContent=allSessions.size;
- $('activityClickCount').textContent=activityRows.filter(r=>r.event_type==='product_click').length;
- $('activityCartCount').textContent=activityRows.filter(r=>r.event_type==='add_to_cart').length;
- const products=new Map();for(const r of filtered){if(!['product_click','add_to_cart','remove_from_cart','checkout_started','order_placed'].includes(r.event_type))continue;const key=(r.product_id||r.product_name||'unknown')+'|'+r.product_name;let p=products.get(key);if(!p){p={name:r.product_name||'Item',category:r.category||'—',clicks:0,adds:0,removes:0,checkouts:0,orders:0};products.set(key,p)}if(r.event_type==='product_click')p.clicks++;if(r.event_type==='add_to_cart')p.adds+=Number(r.quantity||1);if(r.event_type==='remove_from_cart')p.removes+=Number(r.quantity||1);if(r.event_type==='checkout_started')p.checkouts+=Number(r.quantity||1);if(r.event_type==='order_placed')p.orders+=Number(r.quantity||1)}
- const sorted=[...products.values()].sort((a,b)=>b.clicks-a.clicks||b.adds-a.adds);
- $('productActivityTable').innerHTML=sorted.length?`<table><thead><tr><th>Product</th><th>Category</th><th>Clicks / taps</th><th>Added to cart (items)</th><th>Removed</th><th>Checkout</th><th>Ordered (items)</th></tr></thead><tbody>${sorted.map(p=>`<tr><td><b>${esc(p.name)}</b></td><td>${esc(p.category)}</td><td>${p.clicks}</td><td>${p.adds}</td><td>${p.removes}</td><td>${p.checkouts}</td><td>${p.orders}</td></tr>`).join('')}</tbody></table>`:'<p class="muted">No events yet. Customers must choose “Allow analytics” for activity to appear.</p>';
- let visible=[...sessions.entries()].map(([sid,rows])=>({sid,rows,related:getSessionOrders(sid)})).filter(s=>!q||activitySearchText(s.sid,s.rows,s.related).includes(q)).sort((a,b)=>new Date(b.rows[0]?.created_at||0)-new Date(a.rows[0]?.created_at||0));
- $('activitySessions').innerHTML=visible.length?`<table><thead><tr><th>Customer / session</th><th>Activity</th><th>Clicks</th><th>Cart adds</th><th>Latest event</th><th>Order link</th><th>Action</th></tr></thead><tbody>${visible.map(s=>{const o=s.related[0];return `<tr><td><b>${esc(o?.customer_name||'Guest visitor')}</b><br><small>${esc(o?.customer_phone||('Session '+String(s.sid).slice(0,8)+'…'))}</small></td><td>${s.rows.length} events</td><td>${s.rows.filter(r=>r.event_type==='product_click').length}</td><td>${s.rows.filter(r=>r.event_type==='add_to_cart').reduce((n,r)=>n+Number(r.quantity||1),0)}</td><td>${esc(s.rows[0]?.created_at?new Date(s.rows[0].created_at).toLocaleString():'—')}</td><td>${o?`<b>${esc(o.tracking_code||String(o.id).slice(0,8))}</b><br><small>${esc(o.status||'')}</small>`:'<span class="muted">No placed order linked</span>'}</td><td><button class="gold" onclick="showCustomerActivity('${esc(s.sid)}')">Track customer</button></td></tr>`}).join('')}</tbody></table>`:'<p class="muted">No matching customer/session. Make sure analytics consent is enabled on customer website and click/tap/cart events have occurred.</p>';
- if(selectedActivitySession && sessions.has(selectedActivitySession))showCustomerActivity(selectedActivitySession);else if(selectedActivitySession && !visible.some(s=>s.sid===selectedActivitySession))$('activityCustomerDetail').innerHTML='';
-}
-function closeCustomerActivity(){selectedActivitySession=null;$('activityCustomerDetail').innerHTML='';}
-function showCustomerActivity(sessionId){
- selectedActivitySession=sessionId;const rows=activityRows.filter(r=>r.session_id===sessionId).sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));const related=getSessionOrders(sessionId);const main=related[0];const clicks=rows.filter(r=>r.event_type==='product_click').length;const adds=rows.filter(r=>r.event_type==='add_to_cart').reduce((n,r)=>n+Number(r.quantity||1),0);
- const productCounts=new Map();for(const r of rows){if(!r.product_name||r.event_type==='page_view')continue;const p=productCounts.get(r.product_name)||{clicks:0,adds:0,events:0};p.events++;if(r.event_type==='product_click')p.clicks++;if(r.event_type==='add_to_cart')p.adds+=Number(r.quantity||1);productCounts.set(r.product_name,p)}
- $('activityCustomerDetail').innerHTML=`<div class="activity-detail"><div class="row" style="justify-content:space-between"><div><h3 style="margin:0">Customer activity detail</h3><p class="muted">${esc(main?.customer_name||'Guest visitor')} ${main?.customer_phone?'· '+esc(main.customer_phone):''}</p></div><button class="dark" onclick="closeCustomerActivity()">Close details</button></div><p><b>Session ID:</b> <code>${esc(sessionId)}</code></p><div class="activity-grid"><div class="stat">Product clicks<strong>${clicks}</strong></div><div class="stat">Cart additions<strong>${adds}</strong></div><div class="stat">Orders linked<strong>${related.length}</strong></div></div><h4>Products this visitor interacted with</h4>${productCounts.size?`<table><thead><tr><th>Product</th><th>Clicks</th><th>Cart additions</th><th>Events</th></tr></thead><tbody>${[...productCounts.entries()].sort((a,b)=>b[1].clicks-a[1].clicks).map(([name,p])=>`<tr><td>${esc(name)}</td><td>${p.clicks}</td><td>${p.adds}</td><td>${p.events}</td></tr>`).join('')}</tbody></table>`:'<p class="muted">No product events recorded.</p>'}<h4>Recent activity (latest first)</h4><div class="activity-timeline">${rows.slice(0,150).map(r=>`<div class="activity-event"><small>${esc(r.created_at?new Date(r.created_at).toLocaleString():'')}</small><div><span class="activity-pill">${esc(activityEventLabel(r.event_type))}</span><br><b>${esc(r.product_name||'Website')}</b><div class="muted">${esc(r.category||'')}${Number(r.quantity||1)>1?' · Qty '+Number(r.quantity):''}</div></div><small>${esc(r.page_path||'/')}</small></div>`).join('')||'<p class="muted">No activity to show.</p>'}</div>${related.length?`<h4>Linked orders</h4><table><thead><tr><th>Tracking code</th><th>Status</th><th>Total</th><th>Placed</th></tr></thead><tbody>${related.map(o=>`<tr><td>${esc(o.tracking_code||String(o.id).slice(0,8))}</td><td>${esc(o.status||'')}</td><td>${rupee(o.total_amount)}</td><td>${esc(new Date(o.created_at).toLocaleString())}</td></tr>`).join('')}</tbody></table>`:''}</div>`;
-}
-
-function showTab(which,btn){['orders','menu','settings','activity'].forEach(x=>$(x+'Tab').classList.toggle('hidden',x!==which));document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));btn.classList.add('active')}
-function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-</script>
-<div id="pixabayModal" class="photo-modal hidden" role="dialog" aria-modal="true" aria-labelledby="pixabayModalTitle">
-  <div class="photo-modal-content">
-    <div class="row" style="justify-content:space-between"><div><h2 id="pixabayModalTitle">Choose a photo</h2><div class="muted" id="pixabayModalSubtitle">Pick the closest matching food photo.</div></div><button class="dark" onclick="closePixabayModal()">Close ✕</button></div>
-    <div id="pixabayResultsList" class="pixabay-results"></div>
-    <p id="pixabayModalStatus" class="muted" role="status" aria-live="polite"></p>
+<header class="top"><div class="nav"><div class="logo">🐯 FAT <span>TIGER</span><small>FOOD • DRINKS • GOOD TIMES</small></div><div class="spacer"></div><button id="installBtn" class="cartbtn" style="display:none" onclick="installApp()">⬇ Install App</button><button id="accountNavBtn" class="cartbtn" onclick="openAccount()">👤 Login / Account</button><button class="cartbtn" onclick="document.getElementById('orderTracking').scrollIntoView({behavior:'smooth'})">📦 Track order</button><button class="cartbtn" onclick="openCart()">🛒 Cart <span id="cartCount">0</span></button></div></header>
+<section class="hero"><div class="heroBox"><div><div class="eyebrow">BIG FLAVOUR · TIGER ENERGY</div><h1>Your cravings.<br>Our kitchen.</h1><p>Hot momos, loaded burgers, cheesy pizza and cool drinks — pick your favourites and order in a few taps.</p><button class="primary" onclick="document.getElementById('menu').scrollIntoView({behavior:'smooth'})">Explore the menu ↓</button></div></div></section>
+<section class="ft-offer-strip" aria-label="FAT TIGER offers"><div><strong>🐯 Welcome offer</strong><span>10% off on your first order + free delivery</span></div><div><strong>💳 Online payment</strong><span>Flat 10% off when online payments are enabled</span></div><div><strong>🚚 Delivery</strong><span>Free delivery above ₹399 · service radius set by outlet</span></div></section>
+<section id="orderTracking" class="tracking-wrap">
+ <div class="tracking-panel">
+  <h2>📦 Track your FAT TIGER order</h2>
+  <p class="muted">Guest checkout ke baad mila tracking code aur wahi phone number daalo. Login/account banane ki zaroorat nahi.</p>
+  <div class="track-form">
+   <input id="trackCodeInput" autocomplete="off" placeholder="Order tracking code (e.g. FT7K9M2Q)" aria-label="Order tracking code">
+   <input id="trackPhoneInput" inputmode="tel" autocomplete="tel" placeholder="Order wala phone number" aria-label="Phone number used for order">
+   <button class="primary" type="button" onclick="trackGuestOrder()">Track order</button>
   </div>
+  <div id="trackResult" class="track-result" aria-live="polite"></div>
+ </div>
+</section>
+<main class="wrap" id="menu"><div id="shopStatus" style="margin:12px 0;color:#f6b51b;font-size:13px"></div><div class="sectionHead"><h2>Order from the menu</h2><span>Prices in ₹ • Taxes extra as applicable</span></div><div class="tools"><input id="search" placeholder="🔎 Search momos, pizza, shakes..." oninput="render()"></div><div class="chips" id="chips"></div><div id="resultsMeta" class="sectionHead"></div><div class="grid" id="grid"></div><p class="notice">Menu prices are based on the uploaded menu card. Where the card shows multiple sizes or variants, this demo includes selected options only. Food photos are illustrative, not exact product photos. Taxes extra as applicable.</p></main>
+<footer class="footer">🐯 FAT TIGER · Made for hungry people<br><br>Track orders, request eligible cancellations, and leave a rating after completion. Cash on delivery / pickup is supported; online payment is not enabled yet.</footer>
+<div class="drawerShade" id="shade" onclick="closeCart()"></div><aside class="drawer" id="drawer"><div class="drawerHead"><h2>Your cart</h2><button class="close" onclick="closeCart()">✕</button></div><div class="cartitems" id="cartItems"></div><div class="cartTotal"><div class="totalLine"><span>Estimated total</span><span id="total">₹0</span></div><div id="commerceQuote" class="ft-price-breakdown">Loading offers and delivery rules…</div><input id="customerName" placeholder="Your name"><input id="customerPhone" inputmode="tel" autocomplete="tel" placeholder="Contact phone number"><input id="customerAddress" autocomplete="street-address" placeholder="Complete delivery address"><select id="deliveryType" aria-label="Order type" onchange="updateCart()"><option value="delivery">Home delivery</option><option value="pickup">Pickup from outlet</option></select><button class="ft-location-button" type="button" onclick="useCurrentLocation()">📍 Check delivery location</button><div id="deliveryStatus" class="ft-delivery-status" role="status">Check your location to confirm delivery eligibility.</div><select id="paymentMethod" aria-label="Payment method" onchange="updateCart()"><option value="cod">Cash on delivery</option><option value="razorpay" disabled>Online payment (setup pending)</option></select><button class="primary checkout" onclick="checkout()">Place Order</button><div class="mobilehint">Sign in with OTP to save your orders. First order: 10% off + free delivery. Online payment: 10% off when enabled. Offers do not stack.</div></div></aside>
+<div id="accountModal" class="ft-modal" hidden role="dialog" aria-modal="true" aria-labelledby="accountModalTitle">
+ <section class="ft-modal-card">
+  <div class="ft-modal-head"><div><span class="ft-kicker">FAT TIGER ACCOUNT</span><h2 id="accountModalTitle">Login with OTP</h2><p class="ft-muted">Phone ya email verify karo. Orders future ke liye account mein save rahenge.</p></div><button class="close" type="button" onclick="closeAccount()">✕</button></div>
+  <div id="authLoginFields">
+   <label for="loginMethod">Login method</label><select id="loginMethod" onchange="updateLoginMethod()"><option value="phone">Mobile number · SMS OTP</option><option value="email">Gmail / email · Email OTP</option></select>
+   <label for="loginIdentifier">Mobile number / email</label><input id="loginIdentifier" autocomplete="username" placeholder="10-digit mobile number" />
+   <label for="profileNameInput">Your name</label><input id="profileNameInput" autocomplete="name" placeholder="Full name" />
+   <label for="profilePhoneInput">Contact phone (email login users)</label><input id="profilePhoneInput" inputmode="tel" autocomplete="tel" placeholder="+91 mobile number (if using email)" />
+   <button class="primary" type="button" id="sendOtpBtn" onclick="sendCustomerOtp()">Send OTP</button>
+   <div id="otpVerifyFields" hidden><label for="customerOtpInput">6-digit OTP</label><input id="customerOtpInput" inputmode="numeric" autocomplete="one-time-code" maxlength="8" placeholder="Enter OTP sent to you"/><button class="primary" type="button" onclick="verifyCustomerOtp()">Verify & sign in</button></div>
+   <p id="authStatus" class="ft-status" role="status" aria-live="polite"></p>
+  </div>
+  <div id="accountSignedIn" hidden>
+   <div class="ft-account-summary"><div class="ft-avatar">🐯</div><div><b id="accountDisplayName">Customer</b><div id="accountIdentifier" class="ft-muted"></div></div><button class="ft-secondary" type="button" onclick="customerSignOut()">Log out</button></div>
+   <h3>My saved orders</h3><p class="ft-muted">Place orders while signed in to save order history here. Reorder from any previous order.</p><button class="ft-secondary" type="button" onclick="loadCustomerOrders()">↻ Refresh orders</button><div id="myOrdersList" class="ft-my-orders"></div>
+  </div>
+  <p class="ft-footnote">By continuing, you agree that FAT TIGER can use your verified contact details to process orders and send essential order updates. SMS/email delivery depends on your provider setup.</p>
+ </section>
 </div>
-</body></html>
+<div id="locationPromptModal" class="ft-modal" hidden role="dialog" aria-modal="true" aria-labelledby="locationPromptTitle">
+ <section class="ft-modal-card ft-location-card"><div class="ft-modal-head"><div><span class="ft-kicker">DELIVERY CHECK</span><h2 id="locationPromptTitle">Check if we deliver to you</h2></div><button class="close" type="button" onclick="closeLocationPrompt()">✕</button></div><p class="ft-muted">Your browser will ask permission when you press the button. Your precise location is used only to check FAT TIGER delivery distance for this order.</p><button class="primary" type="button" onclick="useCurrentLocation(true)">📍 Allow location & check</button><div id="locationPromptStatus" class="ft-status" role="status"></div><button class="ft-secondary" type="button" onclick="closeLocationPrompt()">Not now</button></section>
+</div>
+<form name="fat-tiger-orders" method="POST" data-netlify="true" hidden><input type="hidden" name="form-name" value="fat-tiger-orders"><input name="customer-name"><input name="customer-phone"><input name="customer-address"><input name="payment-method"><input name="order-summary"><input name="order-total"></form>
+
+<div id="activityConsent" class="analytics-consent" role="dialog" aria-label="Website activity analytics choice" hidden>
+ <div class="consent-copy"><strong>Help FAT TIGER improve its menu</strong><p>With your permission, we record product taps/clicks, add-to-cart and checkout events for this website only. We do not collect GPS/location. If you place an order, this browser session can be linked to that order in the owner dashboard. You can decline and still order normally.</p></div>
+ <div class="consent-actions"><button class="allow" type="button" onclick="setActivityConsent(true)">Allow analytics</button><button type="button" onclick="setActivityConsent(false)">No thanks</button></div>
+</div>
+<script>
+let items = [
+  ["Momos", "Juicy Steamed Momo", "Masala Soya (5 pcs)", 119],
+  ["Momos", "Juicy Steamed Momo", "Masala Soya (8 pcs)", 189],
+  ["Momos", "Juicy Steamed Momo", "Veg Exotic (5 pcs)", 129],
+  ["Momos", "Juicy Steamed Momo", "Veg Exotic (8 pcs)", 209],
+  ["Momos", "Juicy Steamed Momo", "Darjeeling Wheat Veg (5 pcs)", 149],
+  ["Momos", "Juicy Steamed Momo", "Darjeeling Wheat Veg (8 pcs)", 209],
+  ["Momos", "Juicy Steamed Momo", "Paneer (5 pcs)", 159],
+  ["Momos", "Juicy Steamed Momo", "Paneer (8 pcs)", 229],
+  ["Momos", "Juicy Steamed Momo", "Corn N Cheese (5 pcs)", 169],
+  ["Momos", "Juicy Steamed Momo", "Corn N Cheese (8 pcs)", 239],
+  ["Momos", "Juicy Steamed Momo", "Chicken (5 pcs)", 159],
+  ["Momos", "Juicy Steamed Momo", "Chicken (8 pcs)", 229],
+  ["Momos", "Juicy Steamed Momo", "Darjeeling Wheat Chicken (5 pcs)", 169],
+  ["Momos", "Juicy Steamed Momo", "Darjeeling Wheat Chicken (8 pcs)", 229],
+  ["Momos", "Juicy Steamed Momo", "Spicy Chicken (5 pcs)", 179],
+  ["Momos", "Juicy Steamed Momo", "Spicy Chicken (8 pcs)", 239],
+  ["Momos", "Juicy Steamed Momo", "Butter Chicken (5 pcs)", 189],
+  ["Momos", "Juicy Steamed Momo", "Butter Chicken (8 pcs)", 259],
+  ["Momos", "Juicy Steamed Momo", "Tiger Mutton (5 pcs)", 199],
+  ["Momos", "Juicy Steamed Momo", "Tiger Mutton (8 pcs)", 269],
+  ["Momos", "Kurkure Momo (6 pcs)", "Masala Soya", 239],
+  ["Momos", "Kurkure Momo (6 pcs)", "Veg Exotic", 249],
+  ["Momos", "Kurkure Momo (6 pcs)", "Paneer", 269],
+  ["Momos", "Kurkure Momo (6 pcs)", "Corn N Cheese", 279],
+  ["Momos", "Kurkure Momo (6 pcs)", "Chicken", 289],
+  ["Momos", "Kurkure Momo (6 pcs)", "Butter Chicken", 309],
+  ["Momos", "Kurkure Momo (6 pcs)", "Tiger Mutton", 329],
+  ["Momos", "Smoky Momo (6 pcs)", "Masala Soya", 199],
+  ["Momos", "Smoky Momo (6 pcs)", "Veg Exotic", 209],
+  ["Momos", "Smoky Momo (6 pcs)", "Darjeeling Wheat Veg", 209],
+  ["Momos", "Smoky Momo (6 pcs)", "Paneer", 239],
+  ["Momos", "Smoky Momo (6 pcs)", "Corn N Cheese", 249],
+  ["Momos", "Smoky Momo (6 pcs)", "Chicken", 239],
+  ["Momos", "Smoky Momo (6 pcs)", "Darjeeling Wheat Chicken", 239],
+  ["Momos", "Smoky Momo (6 pcs)", "Butter Chicken", 259],
+  ["Momos", "Smoky Momo (6 pcs)", "Tiger Mutton", 299],
+  ["Momos", "Pan Fried Schezwan (6 pcs)", "Veg Exotic", 219],
+  ["Momos", "Pan Fried Schezwan (6 pcs)", "Darjeeling Wheat Veg", 249],
+  ["Momos", "Pan Fried Schezwan (6 pcs)", "Paneer", 249],
+  ["Momos", "Pan Fried Schezwan (6 pcs)", "Corn N Cheese", 259],
+  ["Momos", "Pan Fried Schezwan (6 pcs)", "Chicken", 249],
+  ["Momos", "Pan Fried Schezwan (6 pcs)", "Darjeeling Wheat Chicken", 259],
+  ["Momos", "Pan Fried Schezwan (6 pcs)", "Spicy Chicken", 269],
+  ["Momos", "Pan Fried Schezwan (6 pcs)", "Tiger Mutton", 329],
+  ["Momos", "Pan Fried Tomato Garlic (6 pcs)", "Veg Exotic", 219],
+  ["Momos", "Pan Fried Tomato Garlic (6 pcs)", "Darjeeling Wheat Veg", 239],
+  ["Momos", "Pan Fried Tomato Garlic (6 pcs)", "Paneer", 239],
+  ["Momos", "Pan Fried Tomato Garlic (6 pcs)", "Corn N Cheese", 249],
+  ["Momos", "Pan Fried Tomato Garlic (6 pcs)", "Chicken", 259],
+  ["Momos", "Pan Fried Tomato Garlic (6 pcs)", "Darjeeling Wheat Chicken", 269],
+  ["Momos", "Pan Fried Tomato Garlic (6 pcs)", "Spicy Chicken", 269],
+  ["Momos", "Pan Fried Tomato Garlic (6 pcs)", "Tiger Mutton", 329],
+  ["Momos", "Korean Sweet Chilli BBQ (6 pcs)", "Veg Exotic", 199],
+  ["Momos", "Korean Sweet Chilli BBQ (6 pcs)", "Darjeeling Wheat Veg", 219],
+  ["Momos", "Korean Sweet Chilli BBQ (6 pcs)", "Paneer", 219],
+  ["Momos", "Korean Sweet Chilli BBQ (6 pcs)", "Corn N Cheese", 239],
+  ["Momos", "Korean Sweet Chilli BBQ (6 pcs)", "Chicken", 219],
+  ["Momos", "Korean Sweet Chilli BBQ (6 pcs)", "Darjeeling Wheat Chicken", 239],
+  ["Momos", "Korean Sweet Chilli BBQ (6 pcs)", "Spicy Chicken", 249],
+  ["Momos", "Korean Sweet Chilli BBQ (6 pcs)", "Tiger Mutton", 289],
+  ["Momos", "Chilli Momo (6 pcs)", "Corn N Cheese", 249],
+  ["Momos", "Chilli Momo (6 pcs)", "Chicken", 259],
+  ["Momos", "Momo Platter (16 pcs)", "Veg", 409],
+  ["Momos", "Momo Platter (16 pcs)", "Non-Veg", 439],
+  ["Momos", "Butter Momo", "Butter Paneer Momos (4 pcs)", 199],
+  ["Momos", "Butter Momo", "Butter Paneer Momos (6 pcs)", 299],
+  ["Momos", "Butter Momo", "Butter Chicken Momos (4 pcs)", 249],
+  ["Momos", "Butter Momo", "Butter Chicken Momos (6 pcs)", 359],
+  ["Burgers", "Crazy Burgers", "Aloo Tikki", 69],
+  ["Burgers", "Crazy Burgers", "Veg Supreme", 99],
+  ["Burgers", "Crazy Burgers", "Veg Signature", 149],
+  ["Burgers", "Crazy Burgers", "Spicy Paneer", 189],
+  ["Burgers", "Crazy Burgers", "Cheese Melt Rush", 199],
+  ["Burgers", "Crazy Burgers", "Spicy Pepper N Cheese", 199],
+  ["Burgers", "Crazy Burgers", "Big Fat Veg", 259],
+  ["Burgers", "Crazy Burgers", "Classic Chicken", 129],
+  ["Burgers", "Crazy Burgers", "Grilled Chicken", 189],
+  ["Burgers", "Crazy Burgers", "Crispy Chicken", 209],
+  ["Burgers", "Crazy Burgers", "Big Fat Chicken", 319],
+  ["Pizza", "Pizza", "Tomato Magic (Regular)", 119],
+  ["Pizza", "Pizza", "Onion Magic (Regular)", 119],
+  ["Pizza", "Pizza", "Margherita (Regular)", 169],
+  ["Pizza", "Pizza", "Margherita (Large)", 269],
+  ["Pizza", "Pizza", "Paneer Makhani (Regular)", 219],
+  ["Pizza", "Pizza", "Paneer Makhani (Large)", 359],
+  ["Pizza", "Pizza", "Farmer's Delight (Regular)", 229],
+  ["Pizza", "Pizza", "Farmer's Delight (Large)", 359],
+  ["Pizza", "Pizza", "Pizza Mexicano (Regular)", 229],
+  ["Pizza", "Pizza", "Pizza Mexicano (Large)", 359],
+  ["Pizza", "Pizza", "Chicken Sausage (Regular)", 139],
+  ["Pizza", "Pizza", "Chicken Delight (Regular)", 149],
+  ["Pizza", "Pizza", "Chicken Makhani (Regular)", 239],
+  ["Pizza", "Pizza", "Chicken Makhani (Large)", 359],
+  ["Pizza", "Pizza", "Smoked Chicken (Regular)", 239],
+  ["Pizza", "Pizza", "Smoked Chicken (Large)", 359],
+  ["Pizza", "Pizza", "Exotic Chicken (Regular)", 239],
+  ["Pizza", "Pizza", "Exotic Chicken (Large)", 359],
+  ["Pizza", "Pizza", "Triple Chicken Feast (Regular)", 299],
+  ["Pizza", "Pizza", "Triple Chicken Feast (Large)", 399],
+  ["Sides", "Garlic Bread", "Plain Garlic Bread", 99],
+  ["Sides", "Garlic Bread", "Cheese Garlic Bread", 129],
+  ["Sides", "Garlic Bread", "Exotic Garlic Bread", 159],
+  ["Sides", "Happy Bites", "French Fries (Regular)", 99],
+  ["Sides", "Happy Bites", "French Fries (Large)", 129],
+  ["Sides", "Happy Bites", "Peri Peri Fries (Regular)", 129],
+  ["Sides", "Happy Bites", "Peri Peri Fries (Large)", 159],
+  ["Sides", "Happy Bites", "Loaded Cheesy Fries", 179],
+  ["Sides", "Happy Bites", "Chicken Popcorn", 229],
+  ["Sides", "Happy Bites", "Chicken Seekh Kebab", 239],
+  ["Sides", "Happy Bites", "Crispy Chicken Strips", 309],
+  ["Sides", "Happy Bites", "Juicy Chicken Wings", 309],
+  ["Chinese", "Chinese Signature Gravy", "Veg Manchurian", 249],
+  ["Chinese", "Chinese Signature Gravy", "Chilli Paneer", 299],
+  ["Chinese", "Chinese Signature Gravy", "Kung Pao Paneer", 299],
+  ["Chinese", "Chinese Signature Gravy", "Manchurian Chicken", 299],
+  ["Chinese", "Chinese Signature Gravy", "Chilli Chicken", 319],
+  ["Chinese", "Chinese Signature Gravy", "Kung Pao Chicken", 319],
+  ["Chinese", "Noodles", "Chilli Garlic Noodles", 209],
+  ["Chinese", "Noodles", "Street Style Noodles", 209],
+  ["Chinese", "Noodles", "Chicken Noodles", 259],
+  ["Chinese", "Noodles", "Chicken Chilli Garlic Noodles", 279],
+  ["Chinese", "Hot N Crispy", "Honey Chilli Potato", 229],
+  ["Chinese", "Hot N Crispy", "Sweet Chilli Paneer", 289],
+  ["Chinese", "Hot N Crispy", "Chicken Wings in Chilli Schezwan", 279],
+  ["Chinese", "Hot N Crispy", "Chicken Wings in Kung Pao", 279],
+  ["Chinese", "Hot N Crispy", "Sweet Chilli Chicken", 309],
+  ["Chinese", "Rice Bowl / Fried Rice", "Classic Fried Rice", 179],
+  ["Chinese", "Rice Bowl / Fried Rice", "Chilli Garlic Fried Rice", 179],
+  ["Chinese", "Rice Bowl / Fried Rice", "Kung Pao Veg", 239],
+  ["Chinese", "Rice Bowl / Fried Rice", "Chicken Classic Fried Rice", 269],
+  ["Chinese", "Rice Bowl / Fried Rice", "Chicken Chilli Garlic Fried Rice", 249],
+  ["Chinese", "Rice Bowl / Fried Rice", "Kung Pao Chicken", 299],
+  ["Pasta & Wraps", "Pasta", "White Juicy Alfredo", 259],
+  ["Pasta & Wraps", "Pasta", "Red Hot Sauce Pasta", 259],
+  ["Pasta & Wraps", "Pasta", "Pink Sauce", 259],
+  ["Pasta & Wraps", "Pasta", "Chicken White Juicy Alfredo", 309],
+  ["Pasta & Wraps", "Pasta", "Chicken Red Hot Sauce Pasta", 309],
+  ["Pasta & Wraps", "Pasta", "Chicken Pink Sauce", 309],
+  ["Pasta & Wraps", "Wraps", "Aloo Wrap", 109],
+  ["Pasta & Wraps", "Wraps", "Paneer Tikka Wrap", 199],
+  ["Pasta & Wraps", "Wraps", "Grilled Paneer Tortilla Wrap", 199],
+  ["Pasta & Wraps", "Wraps", "Grilled Chicken Wrap", 219],
+  ["Pasta & Wraps", "Wraps", "Chicken Tikka Wrap", 219],
+  ["Sides", "Add Ons", "Extra Dip", 39],
+  ["Sides", "Add Ons", "Extra Toppings Veg", 39],
+  ["Sides", "Add Ons", "Cheese Slice", 39],
+  ["Sides", "Add Ons", "Boba", 49],
+  ["Sides", "Add Ons", "Korean Dip", 59],
+  ["Sides", "Add Ons", "Extra Toppings Non-Veg", 69],
+  ["Sides", "Add Ons", "Cheese Blast (Regular)", 80],
+  ["Sides", "Add Ons", "Cheese Blast (Large)", 120],
+  ["Shakes & Drinks", "Boba Drinks", "Brown Sugar - Cold Coffee (Regular)", 169],
+  ["Shakes & Drinks", "Boba Drinks", "Brown Sugar - Cold Coffee (Large)", 219],
+  ["Shakes & Drinks", "Boba Drinks", "Crème Brûlée Boba Coffee (Regular)", 169],
+  ["Shakes & Drinks", "Boba Drinks", "Crème Brûlée Boba Coffee (Large)", 219],
+  ["Shakes & Drinks", "Boba Drinks", "Tiramisu Coffee Latte (Regular)", 169],
+  ["Shakes & Drinks", "Boba Drinks", "Tiramisu Coffee Latte (Large)", 219],
+  ["Shakes & Drinks", "Bubble Tea", "Taro Bubble Tea (Regular)", 259],
+  ["Shakes & Drinks", "Bubble Tea", "Taro Bubble Tea (Large)", 359],
+  ["Shakes & Drinks", "Bubble Tea", "Thai Milk Bubble Tea (Regular)", 259],
+  ["Shakes & Drinks", "Bubble Tea", "Thai Milk Bubble Tea (Large)", 359],
+  ["Shakes & Drinks", "Bubble Tea", "Strawberry & Cookie (Regular)", 259],
+  ["Shakes & Drinks", "Bubble Tea", "Strawberry & Cookie (Large)", 359],
+  ["Shakes & Drinks", "Tiger Boba Shakes", "Vanilla Blast", 219],
+  ["Shakes & Drinks", "Tiger Boba Shakes", "Butterscotch", 219],
+  ["Shakes & Drinks", "Tiger Boba Shakes", "Choco Hazelnut", 249],
+  ["Shakes & Drinks", "Tiger Boba Shakes", "Mango", 249],
+  ["Shakes & Drinks", "Tiger Boba Shakes", "Strawberry", 249],
+  ["Shakes & Drinks", "Popping Boba Ice Tea", "Mint & Strawberry", 259],
+  ["Shakes & Drinks", "Popping Boba Ice Tea", "Peach & Passion Fruit", 259],
+  ["Shakes & Drinks", "Popping Boba Ice Tea", "Strawberry & Black Currant", 259],
+  ["Shakes & Drinks", "Hot Beverages", "Home Made Masala Tea", 59],
+  ["Shakes & Drinks", "Hot Beverages", "Original Coffee", 89],
+  ["Shakes & Drinks", "Hot Beverages", "Cream Caramel", 119],
+  ["Shakes & Drinks", "Hot Beverages", "Dark Chocolate", 129],
+  ["Shakes & Drinks", "Hot Beverages", "Irish Hazelnut Coffee", 129],
+  ["Shakes & Drinks", "Hot Beverages", "Hot Chocolate", 129],
+  ["Shakes & Drinks", "Milk Shakes", "Classic Cold Coffee (Regular)", 169],
+  ["Shakes & Drinks", "Milk Shakes", "Classic Cold Coffee (Large)", 229],
+  ["Shakes & Drinks", "Milk Shakes", "Vanilla Blast Shake (Regular)", 219],
+  ["Shakes & Drinks", "Milk Shakes", "Vanilla Blast Shake (Large)", 279],
+  ["Shakes & Drinks", "Milk Shakes", "Butterscotch (Regular)", 219],
+  ["Shakes & Drinks", "Milk Shakes", "Butterscotch (Large)", 279],
+  ["Shakes & Drinks", "Milk Shakes", "Choco Chip Shake (Regular)", 219],
+  ["Shakes & Drinks", "Milk Shakes", "Choco Chip Shake (Large)", 279],
+  ["Shakes & Drinks", "Milk Shakes", "Kit Kat Break (Regular)", 239],
+  ["Shakes & Drinks", "Milk Shakes", "Kit Kat Break (Large)", 289],
+  ["Shakes & Drinks", "Milk Shakes", "Oreo Nutshell (Regular)", 239],
+  ["Shakes & Drinks", "Milk Shakes", "Oreo Nutshell (Large)", 289],
+  ["Shakes & Drinks", "Milk Shakes", "Nutella (Regular)", 269],
+  ["Shakes & Drinks", "Milk Shakes", "Nutella (Large)", 349],
+  ["Shakes & Drinks", "Milk Shakes", "Lotus Biscoff Shake (Regular)", 309],
+  ["Shakes & Drinks", "Milk Shakes", "Lotus Biscoff Shake (Large)", 409],
+  ["Shakes & Drinks", "Matcha", "Classic Matcha", 259],
+  ["Shakes & Drinks", "Matcha", "Butterscotch Matcha", 279],
+  ["Shakes & Drinks", "Matcha", "Mango Matcha", 309],
+  ["Shakes & Drinks", "Matcha", "Strawberry Matcha", 309],
+  ["Shakes & Drinks", "Tiger Coolers", "Bhuna Jeera Blue Soda (Medium)", 149],
+  ["Shakes & Drinks", "Tiger Coolers", "Bhuna Jeera Blue Soda (Large)", 199],
+  ["Shakes & Drinks", "Tiger Coolers", "Chilled Mint Lemonade (Medium)", 149],
+  ["Shakes & Drinks", "Tiger Coolers", "Chilled Mint Lemonade (Large)", 199],
+  ["Shakes & Drinks", "Tiger Coolers", "Masala Coke (Medium)", 149],
+  ["Shakes & Drinks", "Tiger Coolers", "Masala Coke (Large)", 199],
+  ["Shakes & Drinks", "Tiger Mojito", "Classic Mojito (Regular)", 169],
+  ["Shakes & Drinks", "Tiger Mojito", "Classic Mojito (Large)", 219],
+  ["Shakes & Drinks", "Tiger Mojito", "Green Apple Mojito (Regular)", 169],
+  ["Shakes & Drinks", "Tiger Mojito", "Green Apple Mojito (Large)", 219],
+  ["Shakes & Drinks", "Tiger Mojito", "Purple Haze Mojito (Regular)", 169],
+  ["Shakes & Drinks", "Tiger Mojito", "Purple Haze Mojito (Large)", 219],
+  ["Shakes & Drinks", "Tiger Mojito", "Strawberry Mojito (Regular)", 169],
+  ["Shakes & Drinks", "Tiger Mojito", "Strawberry Mojito (Large)", 219],
+  ["Shakes & Drinks", "Waffles", "Milk Chocolate Waffle", 169],
+  ["Shakes & Drinks", "Waffles", "Dark Chocolate Waffle", 169],
+  ["Shakes & Drinks", "Waffles", "Oreo Waffle", 169],
+  ["Shakes & Drinks", "Waffles", "Choco-chip Waffle", 179],
+  ["Shakes & Drinks", "Waffles", "KitKat Waffle", 199],
+  ["Shakes & Drinks", "Waffles", "Nutella Waffle", 249],
+  ["Shakes & Drinks", "Waffles", "Lotus Biscoff Waffle", 269],
+  ["Combos", "Tiger's Combo", "Aloo Tikki Burger + Soft Drink", 119],
+  ["Combos", "Tiger's Combo", "Aloo Wrap + Soft Drink", 139],
+  ["Combos", "Tiger's Combo", "Medium Fries + Coke", 149],
+  ["Combos", "Tiger's Combo", "Medium Fries + Lemonade", 149],
+  ["Combos", "Tiger's Combo", "Large Fries + Coke", 149],
+  ["Combos", "Tiger's Combo", "Large Fries + Lemonade", 149],
+  ["Combos", "Tiger's Combo", "Magic Pizza Veg + Soft Drink", 149],
+  ["Combos", "Tiger's Combo", "Classic Chicken Burger + Soft Drink", 149],
+  ["Combos", "Tiger's Combo", "Magic Pizza Chicken Sausage + Soft Drink", 179]
+];
+
+// Add your Supabase URL and anon key in config.js before publishing.
+let sb = null;
+if (window.FAT_TIGER_CONFIG && window.FAT_TIGER_CONFIG.SUPABASE_URL && window.FAT_TIGER_CONFIG.SUPABASE_ANON_KEY) {
+  sb = window.supabase.createClient(window.FAT_TIGER_CONFIG.SUPABASE_URL, window.FAT_TIGER_CONFIG.SUPABASE_ANON_KEY);
+}
+let storeOpen = true;
+
+// Consent-based customer activity analytics. No GPS and no analytics when declined.
+const FT_ACTIVITY_CONSENT_KEY='ft_activity_consent_v1';
+const FT_ACTIVITY_SESSION_KEY='ft_activity_session_v1';
+let activitySessionId=null;
+function makeActivityUuid(){
+ if(window.crypto&&typeof crypto.randomUUID==='function')return crypto.randomUUID();
+ return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=Math.random()*16|0;return(c==='x'?r:(r&3|8)).toString(16)});
+}
+function readActivitySession(){try{let id=localStorage.getItem(FT_ACTIVITY_SESSION_KEY);if(!id){id=makeActivityUuid();localStorage.setItem(FT_ACTIVITY_SESSION_KEY,id)}return id}catch(_){return null}}
+function initActivityConsent(){try{const choice=localStorage.getItem(FT_ACTIVITY_CONSENT_KEY);if(choice==='yes'){activitySessionId=readActivitySession()}else if(choice!=='no'){const b=document.getElementById('activityConsent');if(b)b.hidden=false}}catch(_){const b=document.getElementById('activityConsent');if(b)b.hidden=false}}
+function setActivityConsent(allow){try{localStorage.setItem(FT_ACTIVITY_CONSENT_KEY,allow?'yes':'no');if(allow){activitySessionId=readActivitySession();logActivityEvent('page_view',{productName:'FAT TIGER homepage',category:'Website',quantity:1})}else{activitySessionId=null}}catch(_){activitySessionId=null}const b=document.getElementById('activityConsent');if(b)b.hidden=true}
+function logActivityEvent(eventType,details={}){
+ if(!activitySessionId||!sb)return;
+ const idx=Number.isInteger(details.index)?details.index:null;
+ const x=idx!==null?items[idx]:null;
+ const row={session_id:activitySessionId,event_type:eventType,product_id:details.productId??(x?(x[4]||String(idx)):null),product_name:String(details.productName??(x?x[2]:'Website event')).slice(0,160),category:String(details.category??(x?x[0]:'Website')).slice(0,80),quantity:Math.max(1,Math.min(99,Number(details.quantity)||1)),page_path:'/'};
+ try{sb.from('menu_activity').insert([row]).then(({error})=>{if(error)console.warn('FAT TIGER analytics event not saved:',error.message)})}catch(e){console.warn('FAT TIGER analytics unavailable:',e)}
+}
+function trackProductClick(index,event){if(event&&event.target&&event.target.closest&&event.target.closest('button,a,input,select,textarea'))return;logActivityEvent('product_click',{index,quantity:1})}
+
+async function loadLiveMenu() {
+  const status = document.getElementById('shopStatus');
+  if (!sb) { status.textContent = 'Demo menu preview. Connect the free database to enable live menu updates and online orders.'; return; }
+  const store = await sb.from('store_settings').select('store_open').eq('id',1).maybeSingle();
+  if (store.data) { storeOpen = !!store.data.store_open; status.textContent = storeOpen ? '' : '🔴 FAT TIGER is currently closed and is not accepting orders.'; }
+  const {data, error} = await sb.from('menu_items').select('*').order('sort_order');
+  if (error) { status.textContent = 'Menu is temporarily unavailable. Please try again later.'; return; }
+  if (data && data.length) {
+    items = data.filter(x => x.available).map(x => [x.category, x.section || x.category, x.name, Number(x.price), x.id, x.image_url || '', x.image_credit || '', x.image_credit_url || '', x.image_source_url || '']);
+    status.textContent = '';
+    init(); updateCart();
+  } else { status.textContent = 'Menu setup is needed in the owner dashboard.'; }
+}
+
+const cats=['All','Momos','Burgers','Pizza','Chinese','Pasta & Wraps','Sides','Shakes & Drinks','Combos'];
+const pics={
+'Momos':'https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=800&q=85',
+'Burgers':'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=800&q=85',
+'Pizza':'https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?auto=format&fit=crop&w=800&q=85',
+'Chinese':'https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=85',
+'Pasta & Wraps':'https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=800&q=85',
+'Sides':'https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=800&q=85',
+'Shakes & Drinks':'https://images.unsplash.com/photo-1577805947697-09c5e2e8c3aa?auto=format&fit=crop&w=800&q=85',
+'Combos':'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=85',
+'Juicy Steamed Momo':'https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=800&q=85',
+'Kurkure Momo (6 pcs)':'https://images.unsplash.com/photo-1563245392-7d1d5b6f7b4d?auto=format&fit=crop&w=800&q=85',
+'Smoky Momo (6 pcs)':'https://images.unsplash.com/photo-1563245392-7d1d5b6f7b4d?auto=format&fit=crop&w=800&q=85',
+'Crazy Burgers':'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=800&q=85',
+'Pizza':'https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?auto=format&fit=crop&w=800&q=85',
+'Noodles':'https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=85',
+'Fried Rice':'https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=85',
+'Pasta':'https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=800&q=85',
+'Wraps':'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=800&q=85',
+'Garlic Bread':'https://images.unsplash.com/photo-1573140247632-f8fd74997d5c?auto=format&fit=crop&w=800&q=85',
+'Happy Bites':'https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=800&q=85',
+'Milk Shakes':'https://images.unsplash.com/photo-1577805947697-09c5e2e8c3aa?auto=format&fit=crop&w=800&q=85',
+'Tiger Coolers':'https://images.unsplash.com/photo-1513558161293-cdaf765edfd7?auto=format&fit=crop&w=800&q=85',
+'Bubble Tea':'https://images.unsplash.com/photo-1558857563-b371033873b8?auto=format&fit=crop&w=800&q=85',
+'Boba Based Drinks':'https://images.unsplash.com/photo-1558857563-b371033873b8?auto=format&fit=crop&w=800&q=85',
+'Matcha':'https://images.unsplash.com/photo-1515823064-d6e0c04616a7?auto=format&fit=crop&w=800&q=85',
+'Popping Boba Ice Tea':'https://images.unsplash.com/photo-1513558161293-cdaf765edfd7?auto=format&fit=crop&w=800&q=85',
+'Hot Beverages':'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=800&q=85',
+'Waffles':'https://images.unsplash.com/photo-1562376552-0d160a2f238d?auto=format&fit=crop&w=800&q=85',
+"Tiger's Combo":'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=85'
+};
+// Replace any invalid image with a reliable category fallback.
+pics.Pizza='https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=700&q=80';
+let active='All',cart={};
+const rupee=n=>'₹'+Number(n).toLocaleString('en-IN');
+function init(){document.getElementById('chips').innerHTML=cats.map(c=>`<button class="chip ${c===active?'active':''}" onclick="setCat('${c}')">${c}</button>`).join('');render()}
+function setCat(c){active=c;document.querySelectorAll('.chip').forEach(b=>b.classList.toggle('active',b.textContent===c));render()}
+function escapeHtml(value){return String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
+function render(){const q=document.getElementById('search').value.toLowerCase();let list=items.map((x,i)=>({...x,id:i})).filter(x=>(active==='All'||x[0]===active)&&x[2].toLowerCase().includes(q));document.getElementById('resultsMeta').innerHTML=`<span style="color:#999;font-size:13px">${list.length} items</span>`;document.getElementById('grid').innerHTML=list.length?list.map(x=>{const image=x[5]||nameBasedFallback(x[2],x[1],x[0]);const sourceName=/pixabay\.com/i.test(x[8]||'')?'Pixabay':(/pexels\.com/i.test(x[8]||'')?'Pexels':'photo source');const credit=x[6]&&x[7]&&x[8]?`<div class="photoCredit">Photo by <a href="${escapeHtml(x[7])}" target="_blank" rel="noopener noreferrer">${escapeHtml(x[6])}</a> on <a href="${escapeHtml(x[8])}" target="_blank" rel="noopener noreferrer">${sourceName}</a></div>`:'';return `<article class="item" onclick="trackProductClick(${x.id},event)"><div class="foodpic"><img loading="lazy" src="${escapeHtml(image)}" alt="${escapeHtml(x[2])}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=85'"><span class="tag">${escapeHtml(String(x[0]).toUpperCase())}</span></div>${credit}<div class="itembody"><small>${escapeHtml(x[1])}</small><h3>${escapeHtml(x[2])}</h3><div class="itemfoot"><span class="price">${rupee(x[3])}</span><button class="add" onclick="add(${x.id})">＋ Add</button></div></div></article>`}).join(''):'<div class="empty">No items found. Try another search.</div>'}
+function nameBasedFallback(name, section, category){const n=String(name+' '+section+' '+category).toLowerCase();const set=(url)=>url; if(/waffle|biscoff|nutella|oreo/.test(n))return pics.Waffles;if(/momo|dumpling/.test(n))return pics.Momos;if(/burger/.test(n))return pics.Burgers;if(/pizza/.test(n))return pics.Pizza;if(/noodle|fried rice|manchurian|chilli paneer|kung pao/.test(n))return pics.Chinese;if(/pasta/.test(n))return pics['Pasta & Wraps'];if(/fries|garlic bread|popcorn|kebab|wings|strips/.test(n))return pics.Sides;if(/bubble tea|boba/.test(n))return pics['Bubble Tea'];if(/matcha/.test(n))return pics.Matcha;if(/mojito|lemonade|cooler|soda/.test(n))return pics['Tiger Coolers'];if(/coffee|tea|shake|milkshake/.test(n))return pics['Shakes & Drinks'];if(/wrap|tortilla/.test(n))return 'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=800&q=85';return pics[section]||pics[category]||pics.Momos;}
+function add(id){cart[id]=(cart[id]||0)+1;logActivityEvent('add_to_cart',{index:id,quantity:1});updateCart();openCart()}
+function change(id,n){cart[id]=(cart[id]||0)+n;if(n>0)logActivityEvent('add_to_cart',{index:id,quantity:n});else logActivityEvent('remove_from_cart',{index:id,quantity:Math.abs(n)});if(cart[id]<=0)delete cart[id];updateCart()}
+function updateCart(){let count=Object.values(cart).reduce((a,b)=>a+b,0),total=0;document.getElementById('cartCount').textContent=count;let html='';Object.keys(cart).forEach(k=>{let x=items[k],qty=cart[k];total+=x[3]*qty;html+=`<div class="cartrow"><div><b>${escapeHtml(x[2])}</b><small>${escapeHtml(x[1])}</small><div class="qty"><button onclick="change(${k},-1)">−</button><span>${qty}</span><button onclick="change(${k},1)">+</button></div></div><b>${rupee(x[3]*qty)}</b></div>`});document.getElementById('cartItems').innerHTML=html||'<div class="emptycart">Your cart is empty.<br>Add something delicious 🐯</div>';document.getElementById('total').textContent=rupee(total);renderCommerceQuote(total)}
+function openCart(){document.getElementById('drawer').classList.add('open');document.getElementById('shade').classList.add('open')}
+function closeCart(){document.getElementById('drawer').classList.remove('open');document.getElementById('shade').classList.remove('open')}
+async function checkout(){
+ if(!sb){alert('Database not configured. Please try again later.');return;}
+ if(!Object.keys(cart).length){alert('Please add an item to your cart first.');return;}
+ if(!currentCustomer?.user){openAccount();setAuthStatus('Order place karne se pehle phone ya email OTP verify karke login karo.');return;}
+ const name=document.getElementById('customerName').value.trim(),phone=normalizeIndianPhone(document.getElementById('customerPhone').value.trim()),address=document.getElementById('customerAddress').value.trim(),payment=document.getElementById('paymentMethod').value,deliveryType=document.getElementById('deliveryType').value;
+ if(!name||!phone||phone.replace(/\D/g,'').length<10){alert('Name aur valid contact phone number daalo.');return;}
+ if(deliveryType==='delivery'&&!address){alert('Complete delivery address daalo.');return;}
+ if(deliveryType==='delivery'&&(!deliveryCoordinates||!Number.isFinite(deliveryCoordinates.lat)||!Number.isFinite(deliveryCoordinates.lng))){alert('Home delivery ke liye pehle “Check delivery location” dabao.');return;}
+ if(deliveryType==='delivery'&&commerceSettings?.outlet_lat!=null&&commerceSettings?.outlet_lng!=null){const d=haversineKm(deliveryCoordinates.lat,deliveryCoordinates.lng,Number(commerceSettings.outlet_lat),Number(commerceSettings.outlet_lng));const cap=Number(commerceSettings.max_delivery_km||10);if(d>cap){showDeliveryMessage(d);alert(`Sorry bhai, home delivery ${cap} km ke andar hi available hai. Tumhari location lagbhag ${d.toFixed(1)} km door hai.`);return;}}
+ Object.keys(cart).forEach(k=>logActivityEvent('checkout_started',{index:Number(k),quantity:cart[k]}));
+ const {data:{session},error:sessionError}=await sb.auth.getSession();if(sessionError||!session?.access_token){openAccount();setAuthStatus('Session expire hai. Dobara OTP login karo.');return;}
+ const orderItems=Object.keys(cart).map(k=>({product_id:items[k][4],quantity:cart[k]}));
+ if(orderItems.some(x=>x.product_id==null)){alert('Live menu IDs nahi mile. Page refresh karke dobara try karo.');return;}
+ const requestBody={name,phone,email:currentCustomer.user.email||'',address,delivery_type:deliveryType,payment_method:payment,latitude:deliveryType==='delivery'?deliveryCoordinates.lat:null,longitude:deliveryType==='delivery'?deliveryCoordinates.lng:null,tracking_session_id:activitySessionId,items:orderItems};
+ const btn=document.querySelector('.checkout');const oldLabel=btn.textContent;btn.disabled=true;btn.textContent='Processing…';
+ try{
+   const response=await fetch('/api/create-order',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token},body:JSON.stringify(requestBody)});
+   const result=await response.json().catch(()=>({}));if(!response.ok)throw new Error(result.error||'Order create nahi hua.');
+   if(payment==='razorpay'){
+     if(!result.razorpay?.order_id||!result.razorpay?.key_id)throw new Error('Online payment configuration incomplete hai. Cash on delivery choose karo ya owner ko Razorpay setup complete karne bolo.');
+     if(typeof window.Razorpay!=='function')throw new Error('Payment gateway script load nahi hui. Page refresh karke try karo.');
+     const opts={key:result.razorpay.key_id,amount:result.razorpay.amount,currency:'INR',name:'FAT TIGER',description:'Food order '+result.tracking_code,order_id:result.razorpay.order_id,prefill:{name, email:currentCustomer.user.email||'',contact:phone},notes:{tracking_code:result.tracking_code},theme:{color:'#e98743'},handler:async function(pay){try{const vr=await fetch('/api/verify-payment',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token},body:JSON.stringify({...pay,tracking_code:result.tracking_code})});const verified=await vr.json().catch(()=>({}));if(!vr.ok||!verified.ok)throw new Error(verified.error||'Payment verification fail hui.');await finishSuccessfulOrder(result,verified);}catch(e){alert('Payment ho sakti hai, par verification pending hai. Tracking code '+result.tracking_code+' save kar lo aur FAT TIGER se contact karo. '+(e.message||''));}}};const rzp=new Razorpay(opts);rzp.on('payment.failed',async function(){try{await fetch('/api/payment-failed',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token},body:JSON.stringify({tracking_code:result.tracking_code})});}catch(_){}alert('Payment complete nahi hui. Order tracking code: '+result.tracking_code+'. Status Failed mark kar diya gaya hai; dobara pay karne se pehle My Account/Track Order check kar lo.');});rzp.open();
+   }else{await finishSuccessfulOrder(result,result);}
+ }catch(e){alert(e.message||'Order process nahi hua.');}
+ finally{btn.disabled=false;btn.textContent=oldLabel;}
+}
+async function finishSuccessfulOrder(orderResult,verifiedResult){const code=orderResult.tracking_code||verifiedResult.tracking_code;if(!code){alert('Order create ho gaya lekin tracking code nahi mila. Admin se contact karo.');return;}Object.keys(cart).forEach(k=>logActivityEvent('order_placed',{index:Number(k),quantity:cart[k]}));Object.keys(cart).forEach(k=>delete cart[k]);updateCart();closeCart();document.getElementById('trackCodeInput').value=code;document.getElementById('trackPhoneInput').value=normalizeIndianPhone(document.getElementById('customerPhone').value.trim());document.getElementById('orderTracking').scrollIntoView({behavior:'smooth'});document.getElementById('trackResult').innerHTML=`<div class="track-card"><div class="track-success"><b>✅ FAT TIGER order received!</b></div><p>Your tracking code</p><div class="track-code">${escapeHtml(code)}</div><p>Order history account mein save hai. Tracking code note kar lo.</p></div>`;await loadCustomerOrders();await trackGuestOrder();}
+// Guest order tracking uses only the tracking code + the phone number used at checkout.
+let lastTrackedOrder = null;
+function createTrackingCode(){
+ const alphabet='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+ const bytes=new Uint8Array(10);
+ if(window.crypto?.getRandomValues)window.crypto.getRandomValues(bytes);else for(let i=0;i<bytes.length;i++)bytes[i]=Math.floor(Math.random()*256);
+ return 'FT'+Array.from(bytes,b=>alphabet[b%alphabet.length]).join('');
+}
+function displayTrackingError(message){const el=document.getElementById('trackResult');el.innerHTML=`<div class="track-card track-error">${escapeHtml(message)}</div>`;}
+async function trackGuestOrder(){
+ const code=document.getElementById('trackCodeInput').value.trim().toUpperCase();
+ const phone=document.getElementById('trackPhoneInput').value.trim();
+ const out=document.getElementById('trackResult');
+ if(!sb){displayTrackingError('Order tracking is not connected yet. Please contact FAT TIGER.');return}
+ if(!code||phone.replace(/\D/g,'').length<10){displayTrackingError('Tracking code aur order wala 10-digit phone number daalo.');return}
+ out.innerHTML='<div class="track-card muted">Order details check ho rahi hain…</div>';
+ try{
+  const {data,error}=await sb.rpc('ft_track_order',{p_tracking_code:code,p_phone:phone});
+  if(error)throw error;
+  if(!data||!data.ok){displayTrackingError(data?.message||'Order nahi mila. Tracking code aur phone number check karo.');return}
+  lastTrackedOrder=data;renderTrackedOrder(data);
+ }catch(e){displayTrackingError('Track karne mein problem: '+(e?.message||'Unknown error')+'. SQL setup run hua hai, ye check karo.');}
+}
+function renderTrackedOrder(o){
+ const el=document.getElementById('trackResult');
+ const status=String(o.status||'New');
+ const stages=['New','Accepted','Preparing','Ready','Completed'];
+ const index=stages.indexOf(status);
+ const timeline=status==='Cancelled'?`<div class="track-cancelled"><b>Order cancelled</b>${o.cancel_reason?`<br>Reason: ${escapeHtml(o.cancel_reason)}`:''}</div>`:`<div class="track-timeline">${stages.map((stage,i)=>`<div class="track-step ${i<=index?'done':''}">${['Placed','Accepted','Preparing','Ready','Completed'][i]}</div>`).join('')}</div>`;
+ const itemHtml=(Array.isArray(o.items)?o.items:[]).map(x=>`<div style="display:flex;justify-content:space-between;gap:10px;margin:6px 0"><span>${escapeHtml(x.name||'Item')} × ${Number(x.quantity||1)}</span><b>${rupee(x.line_total||((Number(x.unit_price)||0)*(Number(x.quantity)||1)))}</b></div>`).join('');
+ const canCancel=!!currentCustomer?.user&&['New','Accepted'].includes(status);
+ const canReview=!!currentCustomer?.user&&status==='Completed'&&!o.reviewed_at&&!o.rating;
+ let actions='';
+ if(canCancel){actions+=`<div class="track-action"><b>Need to cancel this order?</b><p class="muted">Cancellation is available while the order is new or accepted. Please tell us why.</p><textarea id="cancelReasonInput" maxlength="300" placeholder="Cancellation reason (required, max 300 characters)"></textarea><div class="action-buttons"><button class="primary" type="button" onclick="cancelGuestOrder()">Cancel order</button></div></div>`;}
+ if(status==='Completed'&&(o.rating||o.reviewed_at)){actions+=`<div class="track-action"><b>Your review</b><div class="review-stars">${'★'.repeat(Number(o.rating||0))}${'☆'.repeat(5-Number(o.rating||0))}</div><p>${escapeHtml(o.review||'No written comment left.')}</p></div>`;}
+ else if(canReview){actions+=`<div class="track-action"><b>Rate your order</b><p class="muted">Order complete hone ke baad rating aur review de sakte ho.</p><select id="reviewRatingInput" aria-label="Rating"><option value="5">★★★★★ — Excellent</option><option value="4">★★★★☆ — Good</option><option value="3">★★★☆☆ — Okay</option><option value="2">★★☆☆☆ — Poor</option><option value="1">★☆☆☆☆ — Bad</option></select><textarea id="reviewTextInput" maxlength="500" placeholder="Write a review (optional, max 500 characters)"></textarea><div class="action-buttons"><button class="primary" type="button" onclick="submitGuestReview()">Submit rating & review</button></div></div>`;}
+ el.innerHTML=`<div class="track-card"><div class="track-summary"><div><div class="muted">Tracking code</div><div class="track-code">${escapeHtml(o.tracking_code||document.getElementById('trackCodeInput').value.trim().toUpperCase())}</div></div><div><div class="muted">Current status</div><strong>${escapeHtml(status)}</strong></div><div><div class="muted">Order total</div><strong>${rupee(o.total_amount||0)}</strong></div></div><p class="muted">Placed: ${escapeHtml(o.created_at?new Date(o.created_at).toLocaleString():'')}</p>${timeline}<h3 style="margin:16px 0 8px">Order items</h3>${itemHtml||'<p class="muted">Item detail unavailable.</p>'}${o.payment_method?`<p class="muted">Payment: ${escapeHtml(o.payment_method)} · ${escapeHtml(o.payment_status||'')}</p>`:''}${o.discount_amount?`<p class="muted">Discount: −${rupee(o.discount_amount)} · Delivery: ${rupee(o.delivery_fee||0)}</p>`:''}${o.cancel_reason&&status!=='Cancelled'?`<p class="muted">Cancellation note: ${escapeHtml(o.cancel_reason)}</p>`:''}${actions}</div>`;
+}
+async function cancelGuestOrder(){
+ const reason=document.getElementById('cancelReasonInput')?.value.trim()||'';
+ if(reason.length<3){alert('Cancellation reason likho (kam se kam 3 characters).');return}
+ const code=document.getElementById('trackCodeInput').value.trim().toUpperCase(),phone=document.getElementById('trackPhoneInput').value.trim();
+ try{const {data,error}=await sb.rpc('ft_cancel_order',{p_tracking_code:code,p_phone:phone,p_reason:reason});if(error)throw error;if(!data?.ok){alert(data?.message||'Order cancel nahi hua.');return}alert('Order cancellation confirmed.');await trackGuestOrder();}catch(e){alert('Cancel karne mein problem: '+(e?.message||'Unknown error'));}
+}
+async function submitGuestReview(){
+ const rating=Number(document.getElementById('reviewRatingInput')?.value||0),review=document.getElementById('reviewTextInput')?.value.trim()||'';
+ const code=document.getElementById('trackCodeInput').value.trim().toUpperCase(),phone=document.getElementById('trackPhoneInput').value.trim();
+ try{const {data,error}=await sb.rpc('ft_submit_order_review',{p_tracking_code:code,p_phone:phone,p_rating:rating,p_review:review});if(error)throw error;if(!data?.ok){alert(data?.message||'Review save nahi hua.');return}alert('Thanks! Tumhari rating aur review save ho gaya.');await trackGuestOrder();}catch(e){alert('Review save karne mein problem: '+(e?.message||'Unknown error'));}
+}
+
+
+// CUSTOMER OTP ACCOUNT + ORDER HISTORY + DISTANCE/OFFER CONFIG
+let currentCustomer=null, customerProfile=null, customerOrders=[], otpRequest=null, deliveryCoordinates=null, commerceSettings=null;
+function setAuthStatus(t){const el=document.getElementById('authStatus');if(el)el.textContent=t||'';}
+function normalizeIndianPhone(v){let d=String(v||'').trim();if(d.startsWith('+'))return '+'+d.slice(1).replace(/\D/g,'');d=d.replace(/\D/g,'');if(d.length===10)return '+91'+d;if(d.startsWith('91')&&d.length===12)return '+'+d;return d?('+'+d):'';}
+function openAccount(){document.getElementById('accountModal').hidden=false;renderAccountState();}
+function closeAccount(){document.getElementById('accountModal').hidden=true;}
+function updateLoginMethod(){const m=document.getElementById('loginMethod').value;const id=document.getElementById('loginIdentifier');id.type=m==='email'?'email':'tel';id.placeholder=m==='email'?'yourname@gmail.com':'10-digit mobile number';document.getElementById('profilePhoneInput').style.display=m==='email'?'block':'none';document.getElementById('otpVerifyFields').hidden=true;setAuthStatus('');}
+async function sendCustomerOtp(){if(!sb){setAuthStatus('Supabase setup available nahi hai.');return;}const method=document.getElementById('loginMethod').value,raw=document.getElementById('loginIdentifier').value.trim(),name=document.getElementById('profileNameInput').value.trim();if(!raw){setAuthStatus('Phone number ya email daalo.');return;}if(!name){setAuthStatus('Apna name bhi daalo.');return;}let target=raw;if(method==='phone'){target=normalizeIndianPhone(raw);if(!/^\+91\d{10}$/.test(target)){setAuthStatus('India mobile number +91 ke saath sahi daalo.');return;}}else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(target)){setAuthStatus('Valid email address daalo.');return;}try{setAuthStatus('OTP bheja ja raha hai…');let result;if(method==='phone')result=await sb.auth.signInWithOtp({phone:target,options:{shouldCreateUser:true}});else result=await sb.auth.signInWithOtp({email:target,options:{shouldCreateUser:true,emailRedirectTo:location.origin}});if(result.error)throw result.error;otpRequest={method,target,name,phone:method==='phone'?target:normalizeIndianPhone(document.getElementById('profilePhoneInput').value.trim())};document.getElementById('otpVerifyFields').hidden=false;setAuthStatus('OTP bhej diya. Inbox/SMS check karo; OTP kisi ke saath share mat karna.');document.getElementById('customerOtpInput').focus();}catch(e){setAuthStatus('OTP send nahi hua: '+(e.message||'Supabase Auth settings check karo.'));}}
+async function verifyCustomerOtp(){if(!sb||!otpRequest){setAuthStatus('Pehle Send OTP dabao.');return;}const token=document.getElementById('customerOtpInput').value.trim();if(!token){setAuthStatus('OTP enter karo.');return;}try{setAuthStatus('OTP verify ho raha hai…');const payload=otpRequest.method==='phone'?{phone:otpRequest.target,token,type:'sms'}:{email:otpRequest.target,token,type:'email'};const {data,error}=await sb.auth.verifyOtp(payload);if(error)throw error;if(!data.user||!data.session)throw new Error('Verified session receive nahi hui.');currentCustomer={user:data.user,session:data.session};const profileRes=await sb.rpc('ft_touch_customer_profile',{p_display_name:otpRequest.name,p_phone:otpRequest.phone||data.user.phone||'',p_default_address:'',p_login_method:otpRequest.method});if(profileRes.error)console.warn('Profile RPC:',profileRes.error.message);otpRequest=null;document.getElementById('otpVerifyFields').hidden=true;setAuthStatus('Login successful!');await loadCustomerProfile();await loadCustomerOrders();renderAccountState();fillCheckoutFromProfile();updateCart();}catch(e){setAuthStatus('OTP verify nahi hua: '+(e.message||'Code check karo.'));}}
+async function restoreCustomerAuth(){if(!sb)return;try{const {data,error}=await sb.auth.getSession();if(error)throw error;if(data.session?.user){currentCustomer={user:data.session.user,session:data.session};await loadCustomerProfile();await loadCustomerOrders();fillCheckoutFromProfile();renderAccountState();}}catch(e){console.warn('Customer session restore failed',e);}}
+async function loadCustomerProfile(){if(!sb||!currentCustomer?.user)return;const {data,error}=await sb.from('ft_customer_profiles').select('*').eq('user_id',currentCustomer.user.id).maybeSingle();if(!error)customerProfile=data||null;}
+async function loadCustomerOrders(){if(!sb||!currentCustomer?.user){customerOrders=[];renderMyOrders();return;}const {data,error}=await sb.from('orders').select('*').eq('customer_user_id',currentCustomer.user.id).order('created_at',{ascending:false}).limit(50);if(error){document.getElementById('myOrdersList').innerHTML='<p class="ft-muted">Order history abhi load nahi hui: '+escapeHtml(error.message)+'</p>';return;}customerOrders=data||[];renderMyOrders();renderCommerceQuote(Object.keys(cart).reduce((n,k)=>n+Number(items[k]?.[3]||0)*Number(cart[k]||0),0));}
+function renderAccountState(){const signed=!!currentCustomer?.user;document.getElementById('authLoginFields').hidden=signed;document.getElementById('accountSignedIn').hidden=!signed;document.getElementById('accountNavBtn').textContent=signed?'👤 My account':'👤 Login / Account';if(signed){document.getElementById('accountDisplayName').textContent=customerProfile?.full_name||currentCustomer.user.user_metadata?.full_name||'FAT TIGER customer';document.getElementById('accountIdentifier').textContent=currentCustomer.user.email||currentCustomer.user.phone||'';}}
+function fillCheckoutFromProfile(){if(!currentCustomer?.user)return;const u=currentCustomer.user;const nameEl=document.getElementById('customerName'),phoneEl=document.getElementById('customerPhone'),addrEl=document.getElementById('customerAddress');if(nameEl&&!nameEl.value)nameEl.value=customerProfile?.full_name||u.user_metadata?.full_name||'';if(phoneEl&&!phoneEl.value)phoneEl.value=customerProfile?.phone||u.phone||'';if(addrEl&&!addrEl.value)addrEl.value=customerProfile?.default_address||'';}
+function renderMyOrders(){const el=document.getElementById('myOrdersList');if(!el)return;if(!currentCustomer?.user){el.innerHTML='<p class="ft-muted">Phone/email OTP se login karo, phir saved orders yahan dikhenge.</p>';return;}if(!customerOrders.length){el.innerHTML='<p class="ft-muted">Abhi koi saved order nahi. Next order is account mein save hoga.</p>';return;}el.innerHTML=customerOrders.map(o=>{const code=o.tracking_code||String(o.id).slice(0,8);const itemsText=(o.items||[]).map(i=>`${escapeHtml(i.name||'Item')} × ${Number(i.quantity||1)}`).join(', ');return `<div class="ft-order-card"><div class="ft-order-head"><div><b>${escapeHtml(code)}</b><div class="ft-muted">${escapeHtml(o.created_at?new Date(o.created_at).toLocaleString():'')}</div></div><div><b>${escapeHtml(o.status||'New')}</b><div>${rupee(o.total_amount||0)}</div></div></div><p class="ft-muted">${itemsText}</p><div class="action-buttons"><button class="ft-secondary" onclick="trackSavedOrder('${escapeHtml(code)}','${escapeHtml(o.customer_phone||'')}')">Track order</button><button class="ft-secondary" onclick="reorderSavedOrder('${String(o.id).replace(/[^a-zA-Z0-9-]/g,'')}')">Reorder</button></div></div>`}).join('');}
+function trackSavedOrder(code,phone){document.getElementById('trackCodeInput').value=code;document.getElementById('trackPhoneInput').value=phone||currentCustomer?.user?.phone||'';closeAccount();document.getElementById('orderTracking').scrollIntoView({behavior:'smooth'});trackGuestOrder();}
+function reorderSavedOrder(orderId){const o=customerOrders.find(x=>String(x.id)===String(orderId));if(!o)return;let notFound=[];(o.items||[]).forEach(line=>{let idx=items.findIndex(x=>String(x[4])===String(line.product_id));if(idx<0)idx=items.findIndex(x=>x[2]===line.name&&Number(x[3])===Number(line.unit_price));if(idx>=0)cart[idx]=Math.min(99,(cart[idx]||0)+Number(line.quantity||1));else notFound.push(line.name);});updateCart();closeAccount();openCart();if(notFound.length)alert('Kuch items ab menu mein available nahi: '+notFound.join(', '));}
+async function customerSignOut(){if(sb)await sb.auth.signOut();currentCustomer=null;customerProfile=null;customerOrders=[];otpRequest=null;renderAccountState();renderMyOrders();updateCart();}
+async function loadCommerceConfig(){try{const r=await fetch('/api/commerce-config');const d=await r.json();if(!r.ok)throw new Error(d.error||'Config load error');commerceSettings=d;const payment=document.getElementById('paymentMethod');const online=!!d.online_payment_enabled&&!!d.razorpay_key_available;const opt=[...payment.options].find(x=>x.value==='razorpay');if(opt){opt.disabled=!online;opt.textContent=online?'Online payment · 10% off':'Online payment (setup pending)';}if(!online&&payment.value==='razorpay')payment.value='cod';renderCommerceQuote(Object.keys(cart).reduce((n,k)=>n+Number(items[k]?.[3]||0)*Number(cart[k]||0),0));}catch(e){commerceSettings={delivery_fee:40,free_delivery_threshold:399,first_order_discount_pct:10,online_discount_pct:10,first_order_free_delivery:true,max_delivery_km:10};renderCommerceQuote(Object.keys(cart).reduce((n,k)=>n+Number(items[k]?.[3]||0)*Number(cart[k]||0),0));}}
+function renderCommerceQuote(subtotal){const el=document.getElementById('commerceQuote');if(!el)return;const st=commerceSettings||{delivery_fee:40,free_delivery_threshold:399,first_order_discount_pct:10,online_discount_pct:10,first_order_free_delivery:true,max_delivery_km:10};const first=!!currentCustomer?.user&&(customerOrders.filter(o=>!['Cancelled','Payment Failed'].includes(o.status)).length===0);const method=document.getElementById('paymentMethod')?.value||'cod',type=document.getElementById('deliveryType')?.value||'delivery';let pct=(first?Number(st.first_order_discount_pct||10):(method==='razorpay'?Number(st.online_discount_pct||10):0));if(method==='razorpay'&&!first)pct=Number(st.online_discount_pct||10);let discount=Math.round(subtotal*pct)/100;let delivery=type==='pickup'?0:((first&&st.first_order_free_delivery)||subtotal>=Number(st.free_delivery_threshold||399)?0:Number(st.delivery_fee||40));const total=Math.max(0,subtotal-discount+delivery);el.innerHTML=`Items: <b>${rupee(subtotal)}</b><br>Discount${pct?' ('+pct+'%)':''}: <b>−${rupee(discount)}</b>${first?'<span class="ft-muted"> · First-order offer</span>':''}<br>Delivery: <b>${delivery===0?'FREE':rupee(delivery)}</b>${type==='delivery'&&subtotal>=Number(st.free_delivery_threshold||399)?'<span class="ft-muted"> · ₹399+ offer</span>':''}<br><b>Estimated payable: ${rupee(total)}</b><br><span class="ft-muted">Final discount and eligibility server par verify hogi; offers stack nahi hoti.</span>`;document.getElementById('total').textContent=rupee(total);}
+function haversineKm(lat1,lon1,lat2,lon2){const r=6371,toRad=x=>x*Math.PI/180;const dLat=toRad(lat2-lat1),dLon=toRad(lon2-lon1);const a=Math.sin(dLat/2)**2+Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLon/2)**2;return 2*r*Math.asin(Math.sqrt(Math.min(1,a)));}
+function showDeliveryMessage(distance){const el=document.getElementById('deliveryStatus');const cap=Number(commerceSettings?.max_delivery_km||10);el.textContent=distance>15?`You're about ${distance.toFixed(1)} km away. FAT TIGER delivers only within ${cap} km; this location is outside the delivery area. Please choose pickup or contact the outlet.`:distance>cap?`You're about ${distance.toFixed(1)} km away—outside our ${cap} km home-delivery radius. Choose pickup or contact the outlet.`:`You're about ${distance.toFixed(1)} km away. Home delivery is available.`;el.style.color=distance>cap?'#b42318':'#287348';}
+function useCurrentLocation(fromPopup=false){if(!navigator.geolocation){const msg='Is browser mein location access supported nahi hai.';document.getElementById('deliveryStatus').textContent=msg;const p=document.getElementById('locationPromptStatus');if(p)p.textContent=msg;return;}document.getElementById('deliveryStatus').textContent='Location permission ka wait kar rahe hain…';const ps=document.getElementById('locationPromptStatus');if(ps)ps.textContent='Location permission ka wait kar rahe hain…';navigator.geolocation.getCurrentPosition(async pos=>{deliveryCoordinates={lat:pos.coords.latitude,lng:pos.coords.longitude,accuracy:pos.coords.accuracy};sessionStorage.setItem('ft-location-checked','yes');if(!commerceSettings)await loadCommerceConfig();const st=commerceSettings||{};if(st.outlet_lat==null||st.outlet_lng==null){document.getElementById('deliveryStatus').textContent='Outlet location owner Admin → Delivery / Offers mein set kare.';if(ps)ps.textContent='Location mil gayi, par store outlet coordinates set nahi hain.';return;}const d=haversineKm(deliveryCoordinates.lat,deliveryCoordinates.lng,Number(st.outlet_lat),Number(st.outlet_lng));showDeliveryMessage(d);if(d<=Number(st.max_delivery_km||10)){if(ps)ps.textContent=`Delivery available — ${d.toFixed(1)} km from outlet.`;}else{if(ps)ps.textContent=`Sorry, delivery area se bahar (${d.toFixed(1)} km). Max ${Number(st.max_delivery_km||10)} km.`;}if(fromPopup)document.getElementById('locationPromptModal').hidden=true;},err=>{let m=err.code===1?'Location permission deny hui. Browser site settings se allow kar sakte ho.':(err.code===2?'Location available nahi. GPS/Wi-Fi on karke try karo.':'Location check timeout hua. Dobara try karo.');document.getElementById('deliveryStatus').textContent=m;if(ps)ps.textContent=m;});}
+function closeLocationPrompt(){document.getElementById('locationPromptModal').hidden=true;sessionStorage.setItem('ft-location-checked','dismissed');}
+async function initCustomerAuth(){if(!sb)return;await restoreCustomerAuth();loadCommerceConfig();try{if(!sessionStorage.getItem('ft-location-checked'))document.getElementById('locationPromptModal').hidden=false;}catch(_){};}
+
+let deferredInstallPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;const b=document.getElementById('installBtn');if(b)b.style.display='inline-block'});
+async function installApp(){if(!deferredInstallPrompt){alert('On your phone, open the browser menu and choose “Install app” or “Add to Home screen”.');return}deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;const b=document.getElementById('installBtn');if(b)b.style.display='none'}
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}))}
+init();updateCart();initActivityConsent();loadLiveMenu();initCustomerAuth();
+</script></body></html>
