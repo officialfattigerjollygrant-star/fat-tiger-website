@@ -76,11 +76,44 @@ button:hover{filter:brightness(1.07)}
 @media(max-width:650px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.foodpic{height:125px}.itembody{padding:10px}.itembody h3{font-size:13px}.price{font-size:16px}.add{padding:7px 9px}.heroBox{padding:25px;min-height:265px;background-position:58% center}.hero p{font-size:14px;max-width:340px}.nav{padding:12px 15px}.logo{font-size:19px}.wrap,.hero{padding-left:14px;padding-right:14px}.sectionHead h2{font-size:21px}.hero h1{max-width:340px}}
 @media(max-width:360px){.grid{grid-template-columns:1fr}.foodpic{height:175px}.logo{font-size:17px}.cartbtn{padding:10px 12px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important}}
+
+/* Guest order tracking, cancellation and review */
+.tracking-wrap{max-width:1120px;margin:22px auto;padding:0 20px}
+.tracking-panel{border:1px solid #5a351d;border-radius:20px;padding:22px;background:linear-gradient(145deg,#1e1711,#11100e);box-shadow:0 14px 35px #0004}
+.tracking-panel h2{margin:0 0 8px;color:#fff8ef;font-size:24px}
+.track-form{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;margin-top:15px}
+.track-form input,.track-action input,.track-action textarea,.track-action select{width:100%;padding:12px;background:#181411;border:1px solid #49311f;border-radius:10px;color:#fff8ef}
+.track-result{margin-top:16px}
+.track-card{border:1px solid #49311f;background:#14110f;border-radius:14px;padding:16px;margin-top:12px}
+.track-summary{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.track-code{display:inline-block;background:#2c1e12;border:1px dashed #c67d31;border-radius:9px;padding:8px 12px;letter-spacing:1.5px;font-weight:900;color:#ffcb7a}
+.track-timeline{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:18px 0 10px}
+.track-step{font-size:11px;text-align:center;color:#9b8e80;position:relative;padding-top:26px}
+.track-step:before{content:'';position:absolute;top:4px;left:calc(50% - 8px);width:16px;height:16px;border:2px solid #514235;border-radius:50%;background:#181411;z-index:1}
+.track-step:after{content:'';position:absolute;left:calc(50% + 10px);top:11px;width:calc(100% - 20px);height:2px;background:#514235}
+.track-step:last-child:after{display:none}.track-step.done{color:#ffca73;font-weight:800}.track-step.done:before{border-color:#f6b51b;background:#f6b51b;box-shadow:0 0 0 3px #f6b51b22}.track-step.done:after{background:#b77b25}
+.track-cancelled{padding:12px;border:1px solid #793c32;border-radius:10px;background:#281311;color:#ffc2b8;margin-top:12px}
+.track-action{border-top:1px solid #403024;margin-top:16px;padding-top:15px;display:grid;gap:10px}
+.track-action textarea{min-height:76px;resize:vertical}.track-action .action-buttons{display:flex;gap:9px;flex-wrap:wrap}.track-success{color:#94efb4}.track-error{color:#ff9f92}.review-stars{color:#ffbd45;font-size:19px;letter-spacing:2px}
+@media(max-width:650px){.tracking-wrap{padding:0 14px}.tracking-panel{padding:16px}.track-form{grid-template-columns:1fr}.track-timeline{gap:2px}.track-step{font-size:9px;padding-left:1px;padding-right:1px}.track-step:after{width:calc(100% - 16px);left:calc(50% + 8px)}}
+
 </style></head><body>
-<header class="top"><div class="nav"><div class="logo">🐯 FAT <span>TIGER</span><small>FOOD • DRINKS • GOOD TIMES</small></div><div class="spacer"></div><button id="installBtn" class="cartbtn" style="display:none" onclick="installApp()">⬇ Install App</button><button class="cartbtn" onclick="openCart()">🛒 Cart <span id="cartCount">0</span></button></div></header>
+<header class="top"><div class="nav"><div class="logo">🐯 FAT <span>TIGER</span><small>FOOD • DRINKS • GOOD TIMES</small></div><div class="spacer"></div><button id="installBtn" class="cartbtn" style="display:none" onclick="installApp()">⬇ Install App</button><button class="cartbtn" onclick="document.getElementById('orderTracking').scrollIntoView({behavior:'smooth'})">📦 Track order</button><button class="cartbtn" onclick="openCart()">🛒 Cart <span id="cartCount">0</span></button></div></header>
 <section class="hero"><div class="heroBox"><div><div class="eyebrow">BIG FLAVOUR · TIGER ENERGY</div><h1>Your cravings.<br>Our kitchen.</h1><p>Hot momos, loaded burgers, cheesy pizza and cool drinks — pick your favourites and order in a few taps.</p><button class="primary" onclick="document.getElementById('menu').scrollIntoView({behavior:'smooth'})">Explore the menu ↓</button></div></div></section>
+<section id="orderTracking" class="tracking-wrap">
+ <div class="tracking-panel">
+  <h2>📦 Track your FAT TIGER order</h2>
+  <p class="muted">Guest checkout ke baad mila tracking code aur wahi phone number daalo. Login/account banane ki zaroorat nahi.</p>
+  <div class="track-form">
+   <input id="trackCodeInput" autocomplete="off" placeholder="Order tracking code (e.g. FT7K9M2Q)" aria-label="Order tracking code">
+   <input id="trackPhoneInput" inputmode="tel" autocomplete="tel" placeholder="Order wala phone number" aria-label="Phone number used for order">
+   <button class="primary" type="button" onclick="trackGuestOrder()">Track order</button>
+  </div>
+  <div id="trackResult" class="track-result" aria-live="polite"></div>
+ </div>
+</section>
 <main class="wrap" id="menu"><div id="shopStatus" style="margin:12px 0;color:#f6b51b;font-size:13px"></div><div class="sectionHead"><h2>Order from the menu</h2><span>Prices in ₹ • Taxes extra as applicable</span></div><div class="tools"><input id="search" placeholder="🔎 Search momos, pizza, shakes..." oninput="render()"></div><div class="chips" id="chips"></div><div id="resultsMeta" class="sectionHead"></div><div class="grid" id="grid"></div><p class="notice">Menu prices are based on the uploaded menu card. Where the card shows multiple sizes or variants, this demo includes selected options only. Food photos are illustrative, not exact product photos. Taxes extra as applicable.</p></main>
-<footer class="footer">🐯 FAT TIGER · Made for hungry people<br><br>Online orders are submitted through this website when Netlify Forms is enabled. Online payment is not enabled yet.</footer>
+<footer class="footer">🐯 FAT TIGER · Made for hungry people<br><br>Track orders, request eligible cancellations, and leave a rating after completion. Cash on delivery / pickup is supported; online payment is not enabled yet.</footer>
 <div class="drawerShade" id="shade" onclick="closeCart()"></div><aside class="drawer" id="drawer"><div class="drawerHead"><h2>Your cart</h2><button class="close" onclick="closeCart()">✕</button></div><div class="cartitems" id="cartItems"></div><div class="cartTotal"><div class="totalLine"><span>Total</span><span id="total">₹0</span></div><input id="customerName" placeholder="Your name"><input id="customerPhone" placeholder="Phone number"><input id="customerAddress" placeholder="Delivery address"><select id="paymentMethod" aria-label="Payment method" style="width:100%;margin-bottom:10px;background:#252525;border:1px solid #444;color:white;padding:12px;border-radius:10px"><option value="Cash on delivery / pickup">Cash on delivery / pickup</option><option value="Online payment (not enabled yet)">Online payment (not enabled yet)</option></select><button class="primary checkout" onclick="checkout()">Place Order</button><div class="mobilehint">Submit your order request online. Payment gateway setup is needed for online payments.</div></div></aside>
 <form name="fat-tiger-orders" method="POST" data-netlify="true" hidden><input type="hidden" name="form-name" value="fat-tiger-orders"><input name="customer-name"><input name="customer-phone"><input name="customer-address"><input name="payment-method"><input name="order-summary"><input name="order-total"></form>
 <script>
@@ -372,7 +405,7 @@ const rupee=n=>'₹'+Number(n).toLocaleString('en-IN');
 function init(){document.getElementById('chips').innerHTML=cats.map(c=>`<button class="chip ${c===active?'active':''}" onclick="setCat('${c}')">${c}</button>`).join('');render()}
 function setCat(c){active=c;document.querySelectorAll('.chip').forEach(b=>b.classList.toggle('active',b.textContent===c));render()}
 function escapeHtml(value){return String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
-function render(){const q=document.getElementById('search').value.toLowerCase();let list=items.map((x,i)=>({...x,id:i})).filter(x=>(active==='All'||x[0]===active)&&x[2].toLowerCase().includes(q));document.getElementById('resultsMeta').innerHTML=`<span style="color:#999;font-size:13px">${list.length} items</span>`;document.getElementById('grid').innerHTML=list.length?list.map(x=>{const image=x[5]||nameBasedFallback(x[2],x[1],x[0]);const credit=x[6]&&x[7]&&x[8]?`<div class="photoCredit">Photo by <a href="${escapeHtml(x[7])}" target="_blank" rel="noopener noreferrer">${escapeHtml(x[6])}</a> on <a href="${escapeHtml(x[8])}" target="_blank" rel="noopener noreferrer">Pexels</a></div>`:'';return `<article class="item"><div class="foodpic"><img loading="lazy" src="${escapeHtml(image)}" alt="${escapeHtml(x[2])}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=85'"><span class="tag">${escapeHtml(String(x[0]).toUpperCase())}</span></div>${credit}<div class="itembody"><small>${escapeHtml(x[1])}</small><h3>${escapeHtml(x[2])}</h3><div class="itemfoot"><span class="price">${rupee(x[3])}</span><button class="add" onclick="add(${x.id})">＋ Add</button></div></div></article>`}).join(''):'<div class="empty">No items found. Try another search.</div>'}
+function render(){const q=document.getElementById('search').value.toLowerCase();let list=items.map((x,i)=>({...x,id:i})).filter(x=>(active==='All'||x[0]===active)&&x[2].toLowerCase().includes(q));document.getElementById('resultsMeta').innerHTML=`<span style="color:#999;font-size:13px">${list.length} items</span>`;document.getElementById('grid').innerHTML=list.length?list.map(x=>{const image=x[5]||nameBasedFallback(x[2],x[1],x[0]);const sourceName=/pixabay\.com/i.test(x[8]||'')?'Pixabay':(/pexels\.com/i.test(x[8]||'')?'Pexels':'photo source');const credit=x[6]&&x[7]&&x[8]?`<div class="photoCredit">Photo by <a href="${escapeHtml(x[7])}" target="_blank" rel="noopener noreferrer">${escapeHtml(x[6])}</a> on <a href="${escapeHtml(x[8])}" target="_blank" rel="noopener noreferrer">${sourceName}</a></div>`:'';return `<article class="item"><div class="foodpic"><img loading="lazy" src="${escapeHtml(image)}" alt="${escapeHtml(x[2])}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=85'"><span class="tag">${escapeHtml(String(x[0]).toUpperCase())}</span></div>${credit}<div class="itembody"><small>${escapeHtml(x[1])}</small><h3>${escapeHtml(x[2])}</h3><div class="itemfoot"><span class="price">${rupee(x[3])}</span><button class="add" onclick="add(${x.id})">＋ Add</button></div></div></article>`}).join(''):'<div class="empty">No items found. Try another search.</div>'}
 function nameBasedFallback(name, section, category){const n=String(name+' '+section+' '+category).toLowerCase();const set=(url)=>url; if(/waffle|biscoff|nutella|oreo/.test(n))return pics.Waffles;if(/momo|dumpling/.test(n))return pics.Momos;if(/burger/.test(n))return pics.Burgers;if(/pizza/.test(n))return pics.Pizza;if(/noodle|fried rice|manchurian|chilli paneer|kung pao/.test(n))return pics.Chinese;if(/pasta/.test(n))return pics['Pasta & Wraps'];if(/fries|garlic bread|popcorn|kebab|wings|strips/.test(n))return pics.Sides;if(/bubble tea|boba/.test(n))return pics['Bubble Tea'];if(/matcha/.test(n))return pics.Matcha;if(/mojito|lemonade|cooler|soda/.test(n))return pics['Tiger Coolers'];if(/coffee|tea|shake|milkshake/.test(n))return pics['Shakes & Drinks'];if(/wrap|tortilla/.test(n))return 'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?auto=format&fit=crop&w=800&q=85';return pics[section]||pics[category]||pics.Momos;}
 function add(id){cart[id]=(cart[id]||0)+1;updateCart();openCart()}
 function change(id,n){cart[id]=(cart[id]||0)+n;if(cart[id]<=0)delete cart[id];updateCart()}
@@ -388,12 +421,68 @@ async function checkout(){
  let total=0;const orderLines=Object.keys(cart).map(k=>{const x=items[k],sub=x[3]*cart[k];total+=sub;return {name:x[2],section:x[1],quantity:cart[k],unit_price:Number(x[3]),line_total:sub}});
  try {
    if(!sb) throw new Error('Database not configured');
-   const {error}=await sb.from('orders').insert([{customer_name:name,customer_phone:phone,customer_address:address,payment_method:payment,items:orderLines,total_amount:total,status:'New'}]);
+   const trackingCode=createTrackingCode();
+   const {error}=await sb.from('orders').insert([{tracking_code:trackingCode,customer_name:name,customer_phone:phone,customer_address:address,payment_method:payment,items:orderLines,total_amount:total,status:'New'}]);
    if(error) throw error;
-   alert('Order received! Your order request is now sent to FAT TIGER. The restaurant will contact you to confirm.');
+   document.getElementById('trackCodeInput').value=trackingCode;
+   document.getElementById('trackPhoneInput').value=phone;
    Object.keys(cart).forEach(k=>delete cart[k]);updateCart();closeCart();
+   document.getElementById('orderTracking').scrollIntoView({behavior:'smooth'});
+   document.getElementById('trackResult').innerHTML=`<div class="track-card"><div class="track-success"><b>✅ Order request received!</b></div><p>Apna tracking code save kar lo. Order track, eligible cancellation aur completed order ki rating ke liye code + wahi phone number chahiye.</p><div class="track-code">${escapeHtml(trackingCode)}</div><button class="dark" type="button" style="margin:10px 0" onclick="navigator.clipboard?.writeText('${trackingCode}').then(()=>alert('Tracking code copied!')).catch(()=>alert('Code manually note kar lo.'))">Copy tracking code</button><p class="muted">Order detail load ho rahi hai…</p></div>`;
+   await trackGuestOrder();
  } catch(e) { alert('Order could not be sent yet. The owner needs to finish the free database setup first.'); console.error(e); }
 }
+
+// Guest order tracking uses only the tracking code + the phone number used at checkout.
+let lastTrackedOrder = null;
+function createTrackingCode(){
+ const alphabet='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+ const bytes=new Uint8Array(10);
+ if(window.crypto?.getRandomValues)window.crypto.getRandomValues(bytes);else for(let i=0;i<bytes.length;i++)bytes[i]=Math.floor(Math.random()*256);
+ return 'FT'+Array.from(bytes,b=>alphabet[b%alphabet.length]).join('');
+}
+function displayTrackingError(message){const el=document.getElementById('trackResult');el.innerHTML=`<div class="track-card track-error">${escapeHtml(message)}</div>`;}
+async function trackGuestOrder(){
+ const code=document.getElementById('trackCodeInput').value.trim().toUpperCase();
+ const phone=document.getElementById('trackPhoneInput').value.trim();
+ const out=document.getElementById('trackResult');
+ if(!sb){displayTrackingError('Order tracking is not connected yet. Please contact FAT TIGER.');return}
+ if(!code||phone.replace(/\D/g,'').length<10){displayTrackingError('Tracking code aur order wala 10-digit phone number daalo.');return}
+ out.innerHTML='<div class="track-card muted">Order details check ho rahi hain…</div>';
+ try{
+  const {data,error}=await sb.rpc('ft_track_order',{p_tracking_code:code,p_phone:phone});
+  if(error)throw error;
+  if(!data||!data.ok){displayTrackingError(data?.message||'Order nahi mila. Tracking code aur phone number check karo.');return}
+  lastTrackedOrder=data;renderTrackedOrder(data);
+ }catch(e){displayTrackingError('Track karne mein problem: '+(e?.message||'Unknown error')+'. SQL setup run hua hai, ye check karo.');}
+}
+function renderTrackedOrder(o){
+ const el=document.getElementById('trackResult');
+ const status=String(o.status||'New');
+ const stages=['New','Accepted','Preparing','Ready','Completed'];
+ const index=stages.indexOf(status);
+ const timeline=status==='Cancelled'?`<div class="track-cancelled"><b>Order cancelled</b>${o.cancel_reason?`<br>Reason: ${escapeHtml(o.cancel_reason)}`:''}</div>`:`<div class="track-timeline">${stages.map((stage,i)=>`<div class="track-step ${i<=index?'done':''}">${['Placed','Accepted','Preparing','Ready','Completed'][i]}</div>`).join('')}</div>`;
+ const itemHtml=(Array.isArray(o.items)?o.items:[]).map(x=>`<div style="display:flex;justify-content:space-between;gap:10px;margin:6px 0"><span>${escapeHtml(x.name||'Item')} × ${Number(x.quantity||1)}</span><b>${rupee(x.line_total||((Number(x.unit_price)||0)*(Number(x.quantity)||1)))}</b></div>`).join('');
+ const canCancel=['New','Accepted'].includes(status);
+ const canReview=status==='Completed'&&!o.reviewed_at&&!o.rating;
+ let actions='';
+ if(canCancel){actions+=`<div class="track-action"><b>Need to cancel this order?</b><p class="muted">Cancellation is available while the order is new or accepted. Please tell us why.</p><textarea id="cancelReasonInput" maxlength="300" placeholder="Cancellation reason (required, max 300 characters)"></textarea><div class="action-buttons"><button class="primary" type="button" onclick="cancelGuestOrder()">Cancel order</button></div></div>`;}
+ if(status==='Completed'&&(o.rating||o.reviewed_at)){actions+=`<div class="track-action"><b>Your review</b><div class="review-stars">${'★'.repeat(Number(o.rating||0))}${'☆'.repeat(5-Number(o.rating||0))}</div><p>${escapeHtml(o.review||'No written comment left.')}</p></div>`;}
+ else if(canReview){actions+=`<div class="track-action"><b>Rate your order</b><p class="muted">Order complete hone ke baad rating aur review de sakte ho.</p><select id="reviewRatingInput" aria-label="Rating"><option value="5">★★★★★ — Excellent</option><option value="4">★★★★☆ — Good</option><option value="3">★★★☆☆ — Okay</option><option value="2">★★☆☆☆ — Poor</option><option value="1">★☆☆☆☆ — Bad</option></select><textarea id="reviewTextInput" maxlength="500" placeholder="Write a review (optional, max 500 characters)"></textarea><div class="action-buttons"><button class="primary" type="button" onclick="submitGuestReview()">Submit rating & review</button></div></div>`;}
+ el.innerHTML=`<div class="track-card"><div class="track-summary"><div><div class="muted">Tracking code</div><div class="track-code">${escapeHtml(o.tracking_code||document.getElementById('trackCodeInput').value.trim().toUpperCase())}</div></div><div><div class="muted">Current status</div><strong>${escapeHtml(status)}</strong></div><div><div class="muted">Order total</div><strong>${rupee(o.total_amount||0)}</strong></div></div><p class="muted">Placed: ${escapeHtml(o.created_at?new Date(o.created_at).toLocaleString():'')}</p>${timeline}<h3 style="margin:16px 0 8px">Order items</h3>${itemHtml||'<p class="muted">Item detail unavailable.</p>'}${o.payment_method?`<p class="muted">Payment: ${escapeHtml(o.payment_method)}</p>`:''}${o.cancel_reason&&status!=='Cancelled'?`<p class="muted">Cancellation note: ${escapeHtml(o.cancel_reason)}</p>`:''}${actions}</div>`;
+}
+async function cancelGuestOrder(){
+ const reason=document.getElementById('cancelReasonInput')?.value.trim()||'';
+ if(reason.length<3){alert('Cancellation reason likho (kam se kam 3 characters).');return}
+ const code=document.getElementById('trackCodeInput').value.trim().toUpperCase(),phone=document.getElementById('trackPhoneInput').value.trim();
+ try{const {data,error}=await sb.rpc('ft_cancel_order',{p_tracking_code:code,p_phone:phone,p_reason:reason});if(error)throw error;if(!data?.ok){alert(data?.message||'Order cancel nahi hua.');return}alert('Order cancellation confirmed.');await trackGuestOrder();}catch(e){alert('Cancel karne mein problem: '+(e?.message||'Unknown error'));}
+}
+async function submitGuestReview(){
+ const rating=Number(document.getElementById('reviewRatingInput')?.value||0),review=document.getElementById('reviewTextInput')?.value.trim()||'';
+ const code=document.getElementById('trackCodeInput').value.trim().toUpperCase(),phone=document.getElementById('trackPhoneInput').value.trim();
+ try{const {data,error}=await sb.rpc('ft_submit_order_review',{p_tracking_code:code,p_phone:phone,p_rating:rating,p_review:review});if(error)throw error;if(!data?.ok){alert(data?.message||'Review save nahi hua.');return}alert('Thanks! Tumhari rating aur review save ho gaya.');await trackGuestOrder();}catch(e){alert('Review save karne mein problem: '+(e?.message||'Unknown error'));}
+}
+
 let deferredInstallPrompt=null;
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;const b=document.getElementById('installBtn');if(b)b.style.display='inline-block'});
 async function installApp(){if(!deferredInstallPrompt){alert('On your phone, open the browser menu and choose “Install app” or “Add to Home screen”.');return}deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;const b=document.getElementById('installBtn');if(b)b.style.display='none'}
