@@ -1,6 +1,4 @@
-// Paste your Supabase project values here. Use the public anon key only.
-// Never put a service_role key in a website.
 window.FAT_TIGER_CONFIG = {
-  SUPABASE_URL: "https://xjufmeyewrkhzzmjgqvp.supabase.co",
-  SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhqdWZtZXlld3JraHp6bWpncXZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI2NTc1ODQsImV4cCI6MjEwODIzMzU4NH0.1yQ4F3QGHJRsDuENKQTxlwSMjqSksvDvu4UIpYm3U3I"
+  SUPABASE_URL: "https://xjufmeyewrkhzzmjqgvp.supabase.co",
+  SUPABASE_ANON_KEY: "sb_publishable_QfAILvi9mUWitN2Cb0cVLQ_tFuf7Mer"
 };
